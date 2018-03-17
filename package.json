@@ -10,7 +10,7 @@
   },
   "author": "yurezu",
   "repository": "https://github.com/gnosec/pw-js",
-  "license": "ISC",
+  "license": "GNU",
   "bin": {
     "pw": "src/pw.js"
   },
