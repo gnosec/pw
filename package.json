@@ -1,18 +1,18 @@
 {
-  "name": "pw-js",
+  "name": "pw",
   "version": "1.0.0",
-  "description": "Manages encrypted password files",
+  "description": "Intuitive cross-platform command line password manager",
   "scripts": {
     "test": "echo 'No tests found'",
-    "clean": "rimraf dist",
-    "build": "npm run test && npm run clean && pkg src/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path dist",
-    "format-code": "find src -name '*.js' | xargs -I{} ./node_modules/.bin/prettier --write --single-quote {}"
+    "clean": "rimraf bin",
+    "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
+    "format-code": "find lib -name '*.js' | xargs -I{} ./node_modules/.bin/prettier --write --single-quote {}"
   },
-  "author": "yurezu",
-  "repository": "https://github.com/gnosec/pw-js",
-  "license": "GNU",
+  "author": "gnosec",
+  "repository": "git@github.com/gnosec/pw",
+  "license": "None",
   "bin": {
-    "pw": "src/pw.js"
+    "pw": "lib/pw.js"
   },
   "dependencies": {
     "chalk": "^2.3.2",
