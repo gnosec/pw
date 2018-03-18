@@ -1,3 +1,5 @@
+# PW
+
 ## Installation
 ```bash
 # Download code
@@ -23,6 +25,13 @@ setx path "%path%;pw/parent/dir"
 pw
 ```
 
+## Usage
+```bash
+pw my-passwords.pw
+
+
+```
+
 ## Development
 ```bash
 git clone git@github.com/gnosec/pw-js
@@ -30,6 +39,3 @@ cd pw-js
 npm install && npm link
 pw
 ```
-
-
-
