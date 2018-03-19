@@ -112,7 +112,7 @@ describe('PasswordSafe', () => {
             const passwordSafe = new PasswordSafe({
                 'key': 1
             });
-            expect(() => passwordSafe.get('wrongKey')).toThrowError();
+            expect(() => passwordSafe.delete('wrongKey')).toThrowError();
         });
 
         it('should delete the specified value', () => {
@@ -133,6 +133,26 @@ describe('PasswordSafe', () => {
             expect(data['match/one']).toBeUndefined();
             expect(data['match/two']).toBeUndefined();
             expect(data['notAMatch']).toBeDefined();
+        });
+
+        it('should not delete overshadowed values', () => {
+            const data = {
+                'match/one/a': 1,
+                'match/one/b': 1,
+                'match/two': 1
+            };
+            const passwordSafe = new PasswordSafe(data);
+            passwordSafe.delete('match/one/a');
+            expect(data['match/one/a']).toBeUndefined();
+            expect(data['match/one/b']).toBeDefined();
+            expect(data['match/two']).toBeDefined();
+        });
+
+        it('should throw error if key is overshot', () => {
+            const passwordSafe = new PasswordSafe({
+                'match/one': 1
+            });
+            expect(() => passwordSafe.delete('match/one/a')).toThrowError();
         });
 
     });
