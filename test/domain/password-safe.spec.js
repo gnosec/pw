@@ -1,5 +1,3 @@
-const assert = require('assert');
-
 const PasswordSafe = require('../../lib/domain/password-safe');
 
 describe('PasswordSafe', () => {
