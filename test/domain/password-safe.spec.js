@@ -10,9 +10,9 @@ describe('PasswordSafe', () => {
         {},
         [],
         () => {},
-        '/leadingslash',
-        'tailingslash/',
-        'multiple//consecutive//slashes',
+        '.leading',
+        'trailing.',
+        'multiple..consecutive',
         'has space',
         'has\ttabs',
         'has\nnewlines'
@@ -59,11 +59,11 @@ describe('PasswordSafe', () => {
 
         it('should not set the value when a conflict exists', () => {
             const passwordSafe = new PasswordSafe({
-                'one/2': 1,
-                'one/two': 1,
+                'one.2': 1,
+                'one.two': 1,
                 'other': 1
             });
-            expect(() => passwordSafe.set('one/two/three', 'value')).toThrowError();
+            expect(() => passwordSafe.set('one.two.three', 'value')).toThrowError();
             expect(() => passwordSafe.set('one', 'value')).toThrowError();
         });
 
@@ -86,14 +86,14 @@ describe('PasswordSafe', () => {
 
         it('should return undefined when it does not match', () => {
             const passwordSafe = new PasswordSafe({
-                'one/2': 1,
-                'one/two': 1,
+                'one.2': 1,
+                'one.two': 1,
                 'other': 1
             });
 
             expect(passwordSafe.get('missing')).toBeUndefined();
             expect(passwordSafe.get('one')).toBeUndefined();
-            expect(passwordSafe.get('one/two/three')).toBeUndefined();
+            expect(passwordSafe.get('one.two.three')).toBeUndefined();
         });
 
     });
@@ -122,35 +122,35 @@ describe('PasswordSafe', () => {
 
         it('should delete all matches', () => {
             const data = {
-                'match/one': 1,
-                'match/two': 1,
+                'match.one': 1,
+                'match.two': 1,
                 'notAMatch': 1
             };
             const passwordSafe = new PasswordSafe(data);
             passwordSafe.delete('match');
-            expect(data['match/one']).toBeUndefined();
-            expect(data['match/two']).toBeUndefined();
+            expect(data['match.one']).toBeUndefined();
+            expect(data['match.two']).toBeUndefined();
             expect(data['notAMatch']).toBeDefined();
         });
 
         it('should not delete overshadowed values', () => {
             const data = {
-                'match/one/a': 1,
-                'match/one/b': 1,
-                'match/two': 1
+                'match.one.a': 1,
+                'match.one.b': 1,
+                'match.two': 1
             };
             const passwordSafe = new PasswordSafe(data);
-            passwordSafe.delete('match/one/a');
-            expect(data['match/one/a']).toBeUndefined();
-            expect(data['match/one/b']).toBeDefined();
-            expect(data['match/two']).toBeDefined();
+            passwordSafe.delete('match.one.a');
+            expect(data['match.one.a']).toBeUndefined();
+            expect(data['match.one.b']).toBeDefined();
+            expect(data['match.two']).toBeDefined();
         });
 
         it('should throw error if key is overshot', () => {
             const passwordSafe = new PasswordSafe({
-                'match/one': 1
+                'match.one': 1
             });
-            expect(() => passwordSafe.delete('match/one/a')).toThrowError();
+            expect(() => passwordSafe.delete('match.one.a')).toThrowError();
         });
 
     });
@@ -158,8 +158,8 @@ describe('PasswordSafe', () => {
     describe('getSetConflicts()', () => {
 
         const passwordSafe = new PasswordSafe({
-            'one/2': 1,
-            'one/two': 1,
+            'one.2': 1,
+            'one.two': 1,
             'other': 1
         });
 
@@ -170,26 +170,26 @@ describe('PasswordSafe', () => {
         });
 
         it('should not return exact matches', () => {
-            expect(passwordSafe.getSetConflicts('one/two'))
+            expect(passwordSafe.getSetConflicts('one.two'))
                 .toEqual([]);
         });
 
         it('should return all keys with matching ancestor directory', () => {
             expect(passwordSafe.getSetConflicts('one').sort())
-                .toEqual(['one/2', 'one/two'].sort())
+                .toEqual(['one.2', 'one.two'].sort())
         });
 
         it('should return matching ancestor keys', () => {
-            expect(passwordSafe.getSetConflicts('one/two/three'))
-                .toEqual(['one/two'])
+            expect(passwordSafe.getSetConflicts('one.two.three'))
+                .toEqual(['one.two'])
         });
     });
 
     describe('getDeleteMatches()', () => {
 
         const passwordSafe = new PasswordSafe({
-            'one/2': 1,
-            'one/two': 1,
+            'one.2': 1,
+            'one.two': 1,
             'other': 1
         });
 
@@ -200,17 +200,17 @@ describe('PasswordSafe', () => {
         });
 
         it('should return exact matches', () => {
-            expect(passwordSafe.getDeleteMatches('one/two'))
-                .toEqual(['one/two']);
+            expect(passwordSafe.getDeleteMatches('one.two'))
+                .toEqual(['one.two']);
         });
 
         it('should return all keys with matching ancestor directory', () => {
             expect(passwordSafe.getDeleteMatches('one').sort())
-                .toEqual(['one/2', 'one/two'].sort())
+                .toEqual(['one.2', 'one.two'].sort())
         });
 
         it('should not return matching ancestor keys', () => {
-            expect(passwordSafe.getDeleteMatches('one/two/three'))
+            expect(passwordSafe.getDeleteMatches('one.two.three'))
                 .toEqual([])
         });
 
