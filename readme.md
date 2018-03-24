@@ -12,12 +12,9 @@ cd pw
 
 # Build from source
 npm run build
-mv dist/<correct-distribution> <path/of/choice>/pw
-
-# Add pw to your path
 
 # Mac OS
-echo "export PATH=\$PATH:/pw/parent/dir" >> ~/.bash_profile && source ~/.bash_profile
+mv bin/pw-macos /usr/local/bin/pw
 
 # Linux
 echo "export PATH=\$PATH:/pw/parent/dir" >> ~/.bashrc && source ~/.bashrc

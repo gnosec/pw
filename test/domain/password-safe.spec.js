@@ -157,7 +157,7 @@ describe('PasswordSafe', () => {
 
     });
 
-    describe('getSetConflicts()', () => {
+    describe('getConflicts()', () => {
 
         const passwordSafe = new PasswordSafe({
             'one.2': 1,
@@ -167,27 +167,27 @@ describe('PasswordSafe', () => {
 
         it('should throw error for invalid paths', () => {
             InvalidPaths.forEach(invalidPath => {
-                expect(() => passwordSafe.getSetConflicts(invalidPath)).toThrowError();
+                expect(() => passwordSafe.getConflicts(invalidPath)).toThrowError();
             })
         });
 
         it('should not return exact matches', () => {
-            expect(passwordSafe.getSetConflicts('one.two'))
+            expect(passwordSafe.getConflicts('one.two'))
                 .toEqual([]);
         });
 
         it('should return all keys with matching ancestor directory', () => {
-            expect(passwordSafe.getSetConflicts('one').sort())
+            expect(passwordSafe.getConflicts('one').sort())
                 .toEqual(['one.2', 'one.two'].sort())
         });
 
         it('should return matching ancestor keys', () => {
-            expect(passwordSafe.getSetConflicts('one.two.three'))
+            expect(passwordSafe.getConflicts('one.two.three'))
                 .toEqual(['one.two'])
         });
     });
 
-    describe('getDeleteMatches()', () => {
+    describe('getMatches()', () => {
 
         const passwordSafe = new PasswordSafe({
             'one.2': 1,
@@ -198,33 +198,33 @@ describe('PasswordSafe', () => {
 
         it('should return empty for invalid paths', () => {
             InvalidPaths.forEach(invalidPath => {
-                expect(passwordSafe.getDeleteMatches(invalidPath)).toEqual([]);
+                expect(passwordSafe.getMatches(invalidPath)).toEqual([]);
             })
         });
 
         it('should return exact matches', () => {
-            expect(passwordSafe.getDeleteMatches('one.two'))
+            expect(passwordSafe.getMatches('one.two'))
                 .toEqual(['one.two']);
         });
 
         it('should return all keys with matching ancestor directory', () => {
-            expect(passwordSafe.getDeleteMatches('one').sort())
+            expect(passwordSafe.getMatches('one').sort())
                 .toEqual(['one.2', 'one.two'].sort())
         });
 
         it('should not return matching ancestor keys', () => {
-            expect(passwordSafe.getDeleteMatches('one.two.three'))
+            expect(passwordSafe.getMatches('one.two.three'))
                 .toEqual([])
         });
 
         it('should accept single tailing "."', () => {
-            expect(passwordSafe.getDeleteMatches('one.'))
+            expect(passwordSafe.getMatches('one.'))
                 .toEqual(['one.2', 'one.two']);
 
         });
 
         it('should exact match invalid keys to support lagacy keys', () => {
-            expect(passwordSafe.getDeleteMatches('..invalid..'))
+            expect(passwordSafe.getMatches('..invalid..'))
                 .toEqual(['..invalid..']);
         });
 
