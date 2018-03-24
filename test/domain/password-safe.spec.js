@@ -71,12 +71,6 @@ describe('PasswordSafe', () => {
 
     describe('get()', () => {
 
-        it('should throw error for invalid paths', () => {
-            InvalidPaths.forEach(invalidPath => {
-                expect(() => passwordSafe.get(invalidPath, 'validValue')).toThrowError();
-            })
-        });
-
         it('should get the specified value', () => {
             const data = {key: 'value'};
             const passwordSafe = new PasswordSafe(data);
@@ -99,12 +93,6 @@ describe('PasswordSafe', () => {
     });
 
     describe('delete()', () => {
-
-        it('should throw error for invalid paths', () => {
-            InvalidPaths.forEach(invalidPath => {
-                expect(() => passwordSafe.delete(invalidPath, 'validValue')).toThrowError();
-            })
-        });
 
         it('should throw error if there is no matching key', () => {
             const passwordSafe = new PasswordSafe({
@@ -153,6 +141,20 @@ describe('PasswordSafe', () => {
             expect(() => passwordSafe.delete('match.one.a')).toThrowError();
         });
 
+        it('should accept single tailing "."', () => {
+            const data = {
+                'match.one': 1,
+                'match.two': 1,
+                'notAMatch': 1
+            }
+            const passwordSafe = new PasswordSafe(data);
+            passwordSafe.delete('match.');
+            expect(data['match.one']).toBeUndefined();
+            expect(data['match.two']).toBeUndefined();
+            expect(data['notAMatch']).toBeDefined();
+
+        });
+
     });
 
     describe('getSetConflicts()', () => {
@@ -190,12 +192,13 @@ describe('PasswordSafe', () => {
         const passwordSafe = new PasswordSafe({
             'one.2': 1,
             'one.two': 1,
-            'other': 1
+            'other': 1,
+            '..invalid..': 1
         });
 
-        it('should throw error for invalid paths', () => {
+        it('should return empty for invalid paths', () => {
             InvalidPaths.forEach(invalidPath => {
-                expect(() => passwordSafe.getDeleteMatches(invalidPath)).toThrowError();
+                expect(passwordSafe.getDeleteMatches(invalidPath)).toEqual([]);
             })
         });
 
@@ -212,6 +215,17 @@ describe('PasswordSafe', () => {
         it('should not return matching ancestor keys', () => {
             expect(passwordSafe.getDeleteMatches('one.two.three'))
                 .toEqual([])
+        });
+
+        it('should accept single tailing "."', () => {
+            expect(passwordSafe.getDeleteMatches('one.'))
+                .toEqual(['one.2', 'one.two']);
+
+        });
+
+        it('should exact match invalid keys to support lagacy keys', () => {
+            expect(passwordSafe.getDeleteMatches('..invalid..'))
+                .toEqual(['..invalid..']);
         });
 
     });
