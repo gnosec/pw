@@ -1,4 +1,7 @@
+[![Build Status](https://travis-ci.org/gnosec/pw.svg?branch=develop)](https://travis-ci.org/gnosec/pw)
+
 # PW
+A simple and intuitive command-line password manager.
 
 ## Installation
 ```bash
