@@ -1,13 +1,13 @@
 [![Build Status](https://travis-ci.org/gnosec/pw.svg?branch=develop)](https://travis-ci.org/gnosec/pw)
 
 # PW
-A simple and intuitive command-line password manager.
+A simple and intuitive cross-platform command-line password manager.
 
 ## Installation
 ```bash
 # Download code
-git clone git@github.com/gnosec/pw-js
-cd pw-js
+git clone git@github.com/gnosec/pw
+cd pw
 
 # Build from source
 npm run build
@@ -23,22 +23,17 @@ echo "export PATH=\$PATH:/pw/parent/dir" >> ~/.bashrc && source ~/.bashrc
 
 # Windows
 setx path "%path%;pw/parent/dir"
-
-# Run pw
-pw
 ```
 
 ## Usage
 ```bash
-pw my-passwords.pw
-
-
+pw my-passwords
 ```
 
 ## Development
 ```bash
-git clone git@github.com/gnosec/pw-js
-cd pw-js
+git clone git@github.com/gnosec/pw
+cd pw
 npm install && npm link
 pw
 ```
