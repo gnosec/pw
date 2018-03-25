@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/gnosec/pw.svg?branch=develop)](https://travis-ci.org/gnosec/pw)
+[![dependencies Status](https://david-dm.org/gnosec/pw/status.svg)](https://david-dm.org/gnosec/pw)
+[![devDependencies Status](https://david-dm.org/gnosec/pw/dev-status.svg)](https://david-dm.org/gnosec/pw?type=dev)
 [![NSP Status](https://nodesecurity.io/orgs/gnosec/projects/62943e06-a954-435c-ada2-4681479f7df2/badge)](https://nodesecurity.io/orgs/gnosec/projects/62943e06-a954-435c-ada2-4681479f7df2)
 
 # PW
