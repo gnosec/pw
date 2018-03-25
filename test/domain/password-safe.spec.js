@@ -1,4 +1,4 @@
-const PasswordSafe = require('../../lib/domain/password-safe');
+const PasswordSafe = require('../../lib/domain/password-safe/password-safe');
 
 describe('PasswordSafe', () => {
 

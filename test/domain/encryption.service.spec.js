@@ -1,4 +1,4 @@
-const EncryptionService = require('../../lib/domain/encryption.service');
+const EncryptionService = require('../../lib/domain/password-safe/encryption.service');
 
 describe('EncryptionService', () => {
 

@@ -1,4 +1,4 @@
-const SerializationService = require('../../lib/domain/serialization.service');
+const SerializationService = require('../../lib/domain/password-safe/serialization.service');
 
 describe('SerializationService', () => {
 
