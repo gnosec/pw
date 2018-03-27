@@ -1,5 +1,7 @@
 const SetCommand = require('../../../../lib/editor/shell/command/set.command');
 const ValidationService = require('../../../../lib/editor/support/validation.service');
+const PromptService = require('../../../../lib/editor/support/prompt.service');
+const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
 
 const Errors = ['error1', 'error2'];
 const Conflicts = ['key1', 'key2'];
@@ -16,7 +18,8 @@ const KeyAndValue = Object.assign({}, KeyOnly, {
 describe('SetCommand', () => {
 
     const validationService = new ValidationService();
-    const command = new SetCommand(validationService);
+    const promptService = new PromptService();
+    const command = new SetCommand(validationService, promptService);
 
     beforeEach(() => {
         validationService.validateKey = jasmine.createSpy().and.returnValue([]);
@@ -89,7 +92,28 @@ describe('SetCommand', () => {
 
     describe('execute', () => {
     
-        // TODO
+        it('should set a key to a value', () => {
+            const data = {},
+                key = 'key',
+                value = 'value';
+
+            command.execute(new PasswordSafe(data), key, value).then(() => {
+                expect(data[key]).toBe(value);
+            });
+        });
+
+        it('should prompt for a value when a value is not provied', () => {
+            const data = {},
+                key = 'key',
+                value = 'value';
+
+            promptService.prompt = jasmine.createSpy()
+                .and.returnValue(Promise.resolve({value: value}));
+
+            command.execute(new PasswordSafe(data), key).then(() => {
+                expect(data[key]).toBe(value);
+            });
+        });
 
     });
     
