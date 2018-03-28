@@ -15,16 +15,16 @@ describe('GetCommand', () => {
 
     });
 
-    describe('autocomplete', () => {
+    describe('autocomplete()', () => {
 
-        it('should not have autocomplete', () => {
+        it('should autocomplete password safe keys', () => {
             const passwordSafe = new PasswordSafe({a: 'a', b: 'b'});
             expect(command.autocomplete({ passwordSafe })).toEqual(passwordSafe.keys);
         });
 
     });
 
-    describe('validate', () => {
+    describe('validate()', () => {
 
         it('should check for key presence', () => {
             const passwordSafe = new PasswordSafe(),
@@ -58,7 +58,7 @@ describe('GetCommand', () => {
 
     });
 
-    describe('execute', () => {
+    describe('execute()', () => {
     
         it('should copy value to clipboard', () => {
             const data = {key: 'value'},

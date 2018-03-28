@@ -1,18 +1,14 @@
-const SetCommand = require('../../../../lib/editor/shell/command/set.command');
+const DeleteCommand = require('../../../../lib/editor/shell/command/delete.command');
 const ValidationService = require('../../../../lib/editor/support/validation.service');
-const PromptService = require('../../../../lib/editor/support/prompt.service');
 const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
 
-describe('SetCommand', () => {
+describe('DeleteCommand', () => {
 
     const validationService = new ValidationService();
-    const promptService = new PromptService();
-    const command = new SetCommand(validationService, promptService);
+    const command = new DeleteCommand(validationService);
 
     beforeEach(() => {
-        validationService.validateKey = jasmine.createSpy().and.returnValue([]);
-        validationService.validateValue = jasmine.createSpy().and.returnValue([]);
-        validationService.getConflicts = jasmine.createSpy().and.returnValue([]);
+        validationService.getMatches = jasmine.createSpy().and.returnValue([]);
     })
 
     describe('definition', () => {
@@ -25,92 +21,55 @@ describe('SetCommand', () => {
 
     describe('autocomplete()', () => {
 
-        it('should not have autocomplete', () => {
-            expect(command.autocomplete).toBeUndefined();
+        it('should autocomplete password safe keys', () => {
+            const passwordSafe = new PasswordSafe({a: 'a', b: 'b'});
+            expect(command.autocomplete({ passwordSafe })).toEqual(passwordSafe.keys);
         });
 
     });
 
-    describe('validate()', () => {
+    describe('validate', () => {
 
-        const Errors = ['error1', 'error2'];
-        const Conflicts = ['key1', 'key2'];
-        const KeyOnly = {
-            passwordSafe: {
-                data: {}
-            },
-            key: 'key'
-        };
-        const KeyAndValue = Object.assign({}, KeyOnly, {
-            value: 'value'
-        });
+        it('should return errors when there are no matches', () => {
+            const passwordSafe = new PasswordSafe(), 
+                key = 'key';
 
-        it('should validate key', () => {
-            const args = KeyOnly;
-            command.validate(args);
-            expect(validationService.validateKey).toHaveBeenCalledWith(args.key);
-        });
+            validationService.getMatches = jasmine.createSpy().and.returnValue([]);
+            expect(command.validate({passwordSafe, key}).length).toBe(1);
+        })
 
-        it('should return key errors', () => {
-            validationService.validateKey = jasmine.createSpy().and.returnValue(Errors);
-            expect(command.validate(KeyOnly)).toBe(Errors);
-        });
+        it('should return no errors when there are matches', () => {
+            const passwordSafe = new PasswordSafe(), 
+                key = 'key';
 
-        it('should validate value if present', () => {
-            const args = KeyAndValue;
-            command.validate(args);
-            expect(validationService.validateValue).toHaveBeenCalledWith(args.value);
-        });
-
-        it('should return value errors', () => {
-            validationService.validateValue = jasmine.createSpy().and.returnValue(Errors);
-            expect(command.validate(KeyAndValue)).toBe(Errors);
-        });
-
-        it('should not validate value if absent', () => {
-            const args = KeyOnly;
-            command.validate(args);
-            expect(validationService.validateValue).toHaveBeenCalledTimes(0);
-        });
-
-        it('should validate conflicts', () => {
-            const args = KeyOnly;
-            command.validate(args);
-            expect(validationService.getConflicts).toHaveBeenCalledWith(args.passwordSafe.data, args.key);
-        });
-
-        it('should return conflicts', () => {
-            validationService.getConflicts = jasmine.createSpy().and.returnValue(Conflicts);
-            const errors = command.validate(KeyOnly);
-            expect(errors.length).toBe(1);
-        });
+            validationService.getMatches = jasmine.createSpy().and.returnValue(['match']);
+            expect(command.validate({passwordSafe, key}).length).toBe(0);
+        })
 
     });
 
-    describe('execute()', () => {
-    
-        it('should set a key to a value', () => {
-            const data = {},
-                key = 'key',
-                value = 'value';
+    describe('execute', () => {
 
-            command.execute(new PasswordSafe(data), key, value).then(() => {
-                expect(data[key]).toBe(value);
-            });
-        });
+        it('should delete all matches', () => {
+            const matches = ['a', 'b', 'c'];
+            const passwordSafe = jasmine.createSpyObj('PasswordSafe', ['delete']);
+            validationService.getMatches = jasmine.createSpy().and.returnValue(matches);
+            
+            command.execute(passwordSafe, 'key');
 
-        it('should prompt for a value when a value is not provied', () => {
-            const data = {},
-                key = 'key',
-                value = 'value';
+            matches.forEach(match => {
+                expect(passwordSafe.delete).toHaveBeenCalledWith(match);
+            })
+        })
 
-            promptService.prompt = jasmine.createSpy()
-                .and.returnValue(Promise.resolve({value: value}));
+        it('should not delete when matches is empty', () => {
+            const passwordSafe = jasmine.createSpyObj('PasswordSafe', ['delete']);
+            validationService.getMatches = jasmine.createSpy().and.returnValue([]);
+            
+            command.execute(passwordSafe, 'key');
 
-            command.execute(new PasswordSafe(data), key).then(() => {
-                expect(data[key]).toBe(value);
-            });
-        });
+            expect(passwordSafe.delete).toHaveBeenCalledTimes(0);
+        })
 
     });
     

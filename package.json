@@ -2,7 +2,7 @@
   "name": "pw",
   "version": "1.0.0",
   "description": "Intuitive cross-platform command line password manager",
-  "license": "GNU General Public License v3.0",
+  "license": "GPL-3.0-only",
   "author": {
     "name": "gnosec",
     "url": "https://github.com/gnosec"
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "jasmine 'test/**/*.spec.js'",
-    "cover": "istanbul cover node_modules/jasmine/bin/jasmine.js 'test/**/*.spec.js'",
+    "cover": "istanbul cover node_modules/.bin/jasmine 'test/**/*.spec.js'",
     "clean": "rimraf bin",
     "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
     "format-code": "find lib -name '*.js' | xargs -I{} ./node_modules/.bin/prettier --write --single-quote {}"
