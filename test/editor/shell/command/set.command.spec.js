@@ -3,18 +3,6 @@ const ValidationService = require('../../../../lib/editor/support/validation.ser
 const PromptService = require('../../../../lib/editor/support/prompt.service');
 const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
 
-const Errors = ['error1', 'error2'];
-const Conflicts = ['key1', 'key2'];
-const KeyOnly = {
-    passwordSafe: {
-        data: {}
-    },
-    key: 'key'
-};
-const KeyAndValue = Object.assign({}, KeyOnly, {
-    value: 'value'
-})
-
 describe('SetCommand', () => {
 
     const validationService = new ValidationService();
@@ -31,9 +19,6 @@ describe('SetCommand', () => {
 
         it('should return a definition', () => {
             expect(command.definition).toBeDefined();
-            // should use object to verify this at object construction time
-            //expect(command.definition.usage).toBeDefined();
-            //...
         });
 
     });
@@ -47,6 +32,18 @@ describe('SetCommand', () => {
     });
 
     describe('validate', () => {
+
+        const Errors = ['error1', 'error2'];
+        const Conflicts = ['key1', 'key2'];
+        const KeyOnly = {
+            passwordSafe: {
+                data: {}
+            },
+            key: 'key'
+        };
+        const KeyAndValue = Object.assign({}, KeyOnly, {
+            value: 'value'
+        });
 
         it('should validate key', () => {
             const args = KeyOnly;
