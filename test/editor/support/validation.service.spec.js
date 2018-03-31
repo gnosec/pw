@@ -1,30 +1,30 @@
 const ValidationService = require('../../../lib/editor/support/validation.service');
 
-const InvalidValues = [
-    '',
-    null,
-    undefined,
-    999,
-    {},
-    [],
-    () => {},
-    /regex/g
-];
-
-const InvalidKeys = InvalidValues.concat([
-    '.leading',
-    'trailing.',
-    'multiple..consecutive',
-    'has space',
-    'has\ttabs',
-    'has\nnewlines'
-])
-
 describe('ValidationService', () => {
 
     const applicationConfig = { key: { delimiter: '.' }};
     const service = new ValidationService(applicationConfig);
 
+    const InvalidValues = [
+        '',
+        null,
+        undefined,
+        999,
+        {},
+        [],
+        () => {},
+        /regex/g
+    ];
+    
+    const InvalidKeys = InvalidValues.concat([
+        '.leading',
+        'trailing.',
+        'multiple..consecutive',
+        'has space',
+        'has\ttabs',
+        'has\nnewlines'
+    ])
+    
     describe('validateKey()', () => {
 
         it('should return error for invalid keys', () => {
@@ -119,121 +119,3 @@ describe('ValidationService', () => {
     });
 
 })
-
-// move to command tests
-
-// describe('get()', () => {
-
-//     it('should get the specified value', () => {
-//         const data = {key: 'value'};
-//         const passwordSafe = new PasswordSafe(data);
-
-//         expect(passwordSafe.get('key', 'value')).toBe(data.key);
-//     });
-
-//     it('should return undefined when it does not match', () => {
-//         const passwordSafe = new PasswordSafe({
-//             'one.2': 1,
-//             'one.two': 1,
-//             'other': 1
-//         });
-
-//         expect(passwordSafe.get('missing')).toBeUndefined();
-//         expect(passwordSafe.get('one')).toBeUndefined();
-//         expect(passwordSafe.get('one.two.three')).toBeUndefined();
-//     });
-
-// });
-
-// describe('delete()', () => {
-
-//     it('should throw error if there is no matching key', () => {
-//         const passwordSafe = new PasswordSafe({
-//             'key': 1
-//         });
-//         expect(() => passwordSafe.delete('wrongKey')).toThrowError();
-//     });
-
-//     it('should delete the specified value', () => {
-//         const data = {key: 'value'};
-//         const passwordSafe = new PasswordSafe(data);
-//         passwordSafe.delete('key')
-//         expect(data.key).toBeUndefined();
-//     });
-
-//     it('should delete all matches', () => {
-//         const data = {
-//             'match.one': 1,
-//             'match.two': 1,
-//             'notAMatch': 1
-//         };
-//         const passwordSafe = new PasswordSafe(data);
-//         passwordSafe.delete('match');
-//         expect(data['match.one']).toBeUndefined();
-//         expect(data['match.two']).toBeUndefined();
-//         expect(data['notAMatch']).toBeDefined();
-//     });
-
-//     it('should not delete overshadowed values', () => {
-//         const data = {
-//             'match.one.a': 1,
-//             'match.one.b': 1,
-//             'match.two': 1
-//         };
-//         const passwordSafe = new PasswordSafe(data);
-//         passwordSafe.delete('match.one.a');
-//         expect(data['match.one.a']).toBeUndefined();
-//         expect(data['match.one.b']).toBeDefined();
-//         expect(data['match.two']).toBeDefined();
-//     });
-
-//     it('should throw error if key is overshot', () => {
-//         const passwordSafe = new PasswordSafe({
-//             'match.one': 1
-//         });
-//         expect(() => passwordSafe.delete('match.one.a')).toThrowError();
-//     });
-
-//     it('should accept single tailing "."', () => {
-//         const data = {
-//             'match.one': 1,
-//             'match.two': 1,
-//             'notAMatch': 1
-//         }
-//         const passwordSafe = new PasswordSafe(data);
-//         passwordSafe.delete('match.');
-//         expect(data['match.one']).toBeUndefined();
-//         expect(data['match.two']).toBeUndefined();
-//         expect(data['notAMatch']).toBeDefined();
-
-//     });
-
-// });
-
-        // Move to gen and set command test
-
-        // it('should set the specified value', () => {
-        //     const data = {};
-        //     const passwordSafe = new PasswordSafe(data);
-
-        //     passwordSafe.set('key', 'value');
-        //     expect(data.key).toBe('value');
-        // });
-
-        // it('should overwrite existing values if keys match', () => {
-        //     const data = {key: '1'};
-        //     const passwordSafe = new PasswordSafe(data);
-
-        //     passwordSafe.set('key', '2');
-        //     expect(data.key).toBe('2');
-        // });
-
-        // it('should not set the value when a conflict exists', () => {
-        //     const passwordSafe = new PasswordSafe({
-        //         'one.2': 1,
-        //         'one.two': 1,
-        //         'other': 1
-        //     });
-        //     expect(() => passwordSafe.set('one.two.three', 'value')).toThrowError();
-        //     expect(() => passwordSafe.set('one', 'value')).toThrowError();
-        // });
