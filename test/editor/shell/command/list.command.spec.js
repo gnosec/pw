@@ -45,7 +45,7 @@ describe('ListCommand', () => {
             });
         });
 
-        it('should filter on search param', () => {
+        it('should filter on search param case insensitively', () => {
             const data = {a: 'a', b: 'b', c: 'c', A: 'A'},
                 search = 'a';
 
