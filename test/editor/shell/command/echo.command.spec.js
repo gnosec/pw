@@ -1,11 +1,11 @@
-const GetCommand = require('../../../../lib/editor/shell/command/get.command');
-const ClipboardService = require('../../../../lib/editor/support/clipboard.service');
+const EchoCommand = require('../../../../lib/editor/shell/command/echo.command');
+const LoggerService = require('../../../../lib/editor/support/logger');
 const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
 
-describe('GetCommand', () => {
+describe('EchoCommand', () => {
 
-    const clipboardService = new ClipboardService();
-    const command = new GetCommand(clipboardService);
+    const loggerService = new LoggerService();
+    const command = new EchoCommand(loggerService);
 
     describe('definition', () => {
 
@@ -60,15 +60,15 @@ describe('GetCommand', () => {
 
     describe('execute()', () => {
     
-        it('should copy value to clipboard', () => {
+        it('should log value of key', () => {
             const data = {key: 'value'},
                 key = 'key',
                 value = 'value';
 
-            clipboardService.copy = jasmine.createSpy().and.returnValue(value);
+            loggerService.log = jasmine.createSpy();
 
             command.execute(new PasswordSafe(data), key).then(() => {
-                expect(clipboardService.copy).toHaveBeenCalledWith(value);
+                expect(loggerService.log).toHaveBeenCalledWith(`${value}\n`);
             });
         });
 
