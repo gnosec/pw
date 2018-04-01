@@ -2,7 +2,16 @@ const ValidationService = require('../../../lib/editor/support/validation.servic
 
 describe('ValidationService', () => {
 
-    const applicationConfig = { key: { delimiter: '.' }};
+    const applicationConfig = { 
+        key: { 
+            delimiter: '.' 
+        },
+        masterPassword: {
+            minimumLength: 10,
+            maximumLength: 20,
+            minimumSpread: 0.5
+        }
+    };
     const service = new ValidationService(applicationConfig);
 
     const InvalidValues = [
@@ -114,6 +123,55 @@ describe('ValidationService', () => {
         it('should exact match invalid keys to support lagacy keys', () => {
             expect(service.getMatches(data, '..invalid..'))
                 .toEqual(['..invalid..']);
+        });
+
+    });
+
+    describe('validateMasterPassword()', () => {
+
+        const uniqueCharacters = 'abcdefghijklmnopqrstuvwxyz';
+
+        const createMinimumSpreadPassword = (uniqueCharacterCount) => {
+            const base = uniqueCharacters.substring(0, applicationConfig.masterPassword.maximumLength);
+            const repeatCharacterCount = base.length - uniqueCharacterCount;
+            const left = base.substring(0, uniqueCharacterCount);
+            return left + base.charAt(0).repeat(repeatCharacterCount);
+        }
+
+        it('should enforce minimum length', () => {
+            const lessThanMinimumLengthPassword = uniqueCharacters
+                .substring(0, applicationConfig.masterPassword.minimumLength - 1);
+            expect(service.validateMasterPassword(lessThanMinimumLengthPassword).length).toBeGreaterThan(0);
+        });
+
+        it('should allow minimum length', () => {
+            const minimumLengthPassword = uniqueCharacters
+                .substring(0, applicationConfig.masterPassword.minimumLength);
+            expect(service.validateMasterPassword(minimumLengthPassword)).toEqual([]);
+        });
+
+        it('should enforce maximum length', () => {
+            const greaterThanMaximumLengthPassword = uniqueCharacters
+                .substring(0, applicationConfig.masterPassword.maximumLength + 1);
+            expect(service.validateMasterPassword(greaterThanMaximumLengthPassword).length).toBeGreaterThan(0);
+        });
+
+        it('should allow maximum length', () => {
+            const maximumLengthPassword = uniqueCharacters
+                .substring(0, applicationConfig.masterPassword.maximumLength);
+            expect(service.validateMasterPassword(maximumLengthPassword)).toEqual([]);
+        });
+
+        it('should enforce minimum spread', () => {
+            const password = createMinimumSpreadPassword(
+                Math.floor(applicationConfig.masterPassword.maximumLength * applicationConfig.masterPassword.minimumSpread) - 1);
+            expect(service.validateMasterPassword(password).length).toBeGreaterThan(0);
+        });
+
+        it('should allow minimum spread', () => {
+            const password = createMinimumSpreadPassword(
+                Math.floor(applicationConfig.masterPassword.maximumLength * applicationConfig.masterPassword.minimumSpread));
+            expect(service.validateMasterPassword(password)).toEqual([]);
         });
 
     });

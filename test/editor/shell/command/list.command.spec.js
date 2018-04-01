@@ -1,6 +1,7 @@
 const ListCommand = require('../../../../lib/editor/shell/command/list.command');
 const LoggerService = require('../../../../lib/editor/support/logger');
 const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
+const LineEnding = require('os').EOL;
 
 describe('ListCommand', () => {
 
@@ -40,7 +41,7 @@ describe('ListCommand', () => {
 
             command.execute(new PasswordSafe(data)).then(() => {
                 expect(loggerService.log).toHaveBeenCalledWith(
-                    Object.keys(data).sort((a, b) => a.localeCompare(b)).join('\n')
+                    Object.keys(data).sort((a, b) => a.localeCompare(b)).join(LineEnding)
                 );
             });
         });
@@ -53,7 +54,7 @@ describe('ListCommand', () => {
 
             command.execute(new PasswordSafe(data), search).then(() => {
                 expect(loggerService.log).toHaveBeenCalledWith(
-                    Object.keys({a: 'a', A: 'A'}).sort((a, b) => a.localeCompare(b)).join('\n')
+                    Object.keys({a: 'a', A: 'A'}).sort((a, b) => a.localeCompare(b)).join(LineEnding)
                 );
             });
         });

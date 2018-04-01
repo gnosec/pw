@@ -1,6 +1,7 @@
 const EchoCommand = require('../../../../lib/editor/shell/command/echo.command');
 const LoggerService = require('../../../../lib/editor/support/logger');
 const PasswordSafe = require('../../../../lib/domain/password-safe/password-safe');
+const LineEnding = require('os').EOL;
 
 describe('EchoCommand', () => {
 
@@ -68,7 +69,7 @@ describe('EchoCommand', () => {
             loggerService.log = jasmine.createSpy();
 
             command.execute(new PasswordSafe(data), key).then(() => {
-                expect(loggerService.log).toHaveBeenCalledWith(`${value}\n`);
+                expect(loggerService.log).toHaveBeenCalledWith(`${value}${LineEnding}`);
             });
         });
 
