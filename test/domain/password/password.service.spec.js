@@ -14,36 +14,26 @@ describe('PasswordService', () => {
   describe('createPassword()', () => {
 
     it('should use default length config if option is not provided', () => {
-      service.createPassword().then(password => {
-        expect(password.length).toBe(config.defaultLength);
-      })
+      expect(service.createPassword().length).toBe(config.defaultLength);
     })
     
     it('should use length option', () => {
       const options = { length: 6 };
-      service.createPassword(options).then(password => {
-        expect(password.length).toBe(options.length);
-      })
+      expect(service.createPassword(options).length).toBe(options.length);
     })
 
     it('should use clamp to minimum length config', () => {
       const options = { length: config.minimumLength - 1 };
-      service.createPassword(options).then(password => {
-        expect(password.length).toBe(config.minimumLength);
-      })
+      expect(service.createPassword(options).length).toBe(config.minimumLength);
     })
 
     it('should use clamp to maximum length config', () => {
       const options = { length: config.maximumLength + 1 };
-      service.createPassword(options).then(password => {
-        expect(password.length).toBe(config.maximumLength);
-      })
+      expect(service.createPassword(options).length).toBe(config.maximumLength);
     })
 
     it('should use default charset config if option is not provided', () => {
-      service.createPassword().then(password => {
-        expect(/^\d+$/.test(password)).toBe(true);
-      })
+      expect(/^\d+$/.test(service.createPassword())).toBe(true);
     })
 
   })

@@ -101,7 +101,7 @@ describe('GenerateCommand', () => {
                 value = 'value',
                 options = {};
 
-            passwordService.createPassword = jasmine.createSpy().and.returnValue(Promise.resolve(value));
+            passwordService.createPassword = jasmine.createSpy().and.returnValue(value);
 
             command.execute(new PasswordSafe(data), key, options).then(() => {
                 expect(data[key]).toBe(value);
@@ -114,7 +114,7 @@ describe('GenerateCommand', () => {
                 value = 'value',
                 options = {};
 
-            passwordService.createPassword = jasmine.createSpy().and.returnValue(Promise.resolve(value));
+            passwordService.createPassword = jasmine.createSpy().and.returnValue(value);
 
             command.execute(new PasswordSafe(data), key, options).then(() => {
                 expect(data[key]).toBeUndefined();
@@ -127,7 +127,7 @@ describe('GenerateCommand', () => {
                 value = 'value',
                 options = {};
 
-            passwordService.createPassword = jasmine.createSpy().and.returnValue(Promise.resolve(value));
+            passwordService.createPassword = jasmine.createSpy().and.returnValue(value);
             clipboardService.copy = jasmine.createSpy();
 
             command.execute(new PasswordSafe(data), key, options).then(() => {
