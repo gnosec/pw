@@ -21,12 +21,26 @@ describe('PasswordSafe', () => {
             expect(semver.valid(version)).toBe(version);
         })
 
+        it('should be readonly', () => {
+            const passwordSafe = new PasswordSafe();
+            const previousValue = passwordSafe.version;
+            passwordSafe.version = '0.0.0';
+            expect(passwordSafe.version).toBe(previousValue);
+        })
+
     })
 
     describe('events', () => {
 
         it('should expose events', () => {
             expect(new PasswordSafe().events).toBeDefined();
+        })
+
+        it('should be readonly', () => {
+            const passwordSafe = new PasswordSafe();
+            const previousValue = passwordSafe.events;
+            passwordSafe.events = null;
+            expect(passwordSafe.events).toBe(previousValue);
         })
 
     })
