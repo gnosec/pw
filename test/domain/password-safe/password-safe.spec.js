@@ -1,4 +1,5 @@
 const PasswordSafe = require('../../../lib/domain/password-safe/password-safe');
+const semver = require('semver');
 const InvalidKeys = [
     '',
     null,
@@ -12,6 +13,23 @@ const InvalidKeys = [
 const InvalidValues = InvalidKeys.concat()
 
 describe('PasswordSafe', () => {
+
+    describe('version', () => {
+
+        it('should be semantic version defined', () => {
+            const { version } = new PasswordSafe();
+            expect(semver.valid(version)).toBe(version);
+        })
+
+    })
+
+    describe('events', () => {
+
+        it('should expose events', () => {
+            expect(new PasswordSafe().events).toBeDefined();
+        })
+
+    })
 
     describe('set()', () => {
 
@@ -41,6 +59,32 @@ describe('PasswordSafe', () => {
 
             passwordSafe.set('key', '2');
             expect(data.key).toBe('2');
+        });
+
+        it('should trigger change event when value changes', () => {
+            const passwordSafe = new PasswordSafe();
+            const spy = jasmine.createSpy();
+            passwordSafe.events.on('change', spy);
+            passwordSafe.set('key', 'value');
+            expect(spy).toHaveBeenCalledWith({previousValue: undefined, value: 'value'});
+        });
+
+        it('should trigger change when existing value is overwritten', () => {
+            const data = {key: 'value'};
+            const passwordSafe = new PasswordSafe(data);
+            const spy = jasmine.createSpy();
+            passwordSafe.events.on('change', spy);
+            passwordSafe.set('key', 'newValue');
+            expect(spy).toHaveBeenCalledWith({previousValue: 'value', value: 'newValue'});
+        });
+
+        it('should not trigger change event when value does not change', () => {
+            const data = {key: 'value'};
+            const passwordSafe = new PasswordSafe(data);
+            const spy = jasmine.createSpy();
+            passwordSafe.events.on('change', spy);
+            passwordSafe.set('key', 'value');
+            expect(spy).not.toHaveBeenCalled();
         });
 
     });
@@ -111,6 +155,24 @@ describe('PasswordSafe', () => {
             const passwordSafe = new PasswordSafe(data);
             passwordSafe.delete('key')
             expect(data.key).toBeUndefined();
+        });
+
+        it('should trigger change event when value changes', () => {
+            const data = {key: 'value'};
+            const passwordSafe = new PasswordSafe(data);
+            const spy = jasmine.createSpy();
+            passwordSafe.events.on('change', spy);
+            passwordSafe.delete('key');
+            expect(spy).toHaveBeenCalledWith({previousValue: 'value', value: undefined});
+        });
+
+        it('should not trigger change event when value does not change', () => {
+            const data = {key: 'value'};
+            const passwordSafe = new PasswordSafe(data);
+            const spy = jasmine.createSpy();
+            passwordSafe.events.on('change', spy);
+            passwordSafe.delete('noSuchKey');
+            expect(spy).not.toHaveBeenCalled();
         });
 
     });

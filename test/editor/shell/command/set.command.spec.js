@@ -70,7 +70,7 @@ describe('SetCommand', () => {
         it('should not validate value if absent', () => {
             const args = KeyOnly;
             command.validate(args);
-            expect(validationService.validateValue).toHaveBeenCalledTimes(0);
+            expect(validationService.validateValue).not.toHaveBeenCalled();
         });
 
         it('should validate conflicts', () => {

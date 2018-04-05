@@ -68,7 +68,7 @@ describe('DeleteCommand', () => {
             
             command.execute(passwordSafe, 'key');
 
-            expect(passwordSafe.delete).toHaveBeenCalledTimes(0);
+            expect(passwordSafe.delete).not.toHaveBeenCalled();
         })
 
     });
