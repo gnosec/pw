@@ -12,8 +12,8 @@
     "url": "https://github.com/gnosec/pw/issues"
   },
   "scripts": {
-    "test": "jasmine 'test/**/*.spec.js'",
-    "cover": "istanbul cover node_modules/.bin/jasmine 'test/**/*.spec.js'",
+    "test": "jasmine 'lib/**/*.spec.js'",
+    "cover": "istanbul cover node_modules/.bin/jasmine 'lib/**/*.spec.js'",
     "clean": "rimraf bin",
     "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
     "format-code": "find lib -name '*.js' | xargs -I{} ./node_modules/.bin/prettier --write --single-quote {}"
