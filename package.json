@@ -12,7 +12,7 @@
     "url": "https://github.com/gnosec/pw/issues"
   },
   "scripts": {
-    "test": "jasmine 'lib/**/*.spec.js'",
+    "test": "jest",
     "cover": "istanbul cover node_modules/.bin/jasmine 'lib/**/*.spec.js'",
     "clean": "rimraf bin",
     "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
@@ -37,8 +37,9 @@
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "jasmine": "^3.1.0",
+    "jest": "^23.6.0",
     "npm": "^5.8.0",
-    "pkg": "^4.3.0",
+    "pkg": "^4.3.4",
     "prettier": "^1.11.1",
     "rimraf": "^2.6.2"
   }
