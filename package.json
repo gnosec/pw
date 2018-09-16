@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "jest",
-    "cover": "istanbul cover node_modules/.bin/jasmine 'lib/**/*.spec.js'",
+    "cover": "jest --coverage --collectCoverageFrom=lib/**/*.{js}",
     "clean": "rimraf bin",
     "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
     "format-code": "find lib -name '*.js' | xargs -I{} ./node_modules/.bin/prettier --write --single-quote {}"
@@ -34,9 +34,6 @@
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
-    "istanbul": "^0.4.5",
-    "jasmine": "^3.1.0",
     "jest": "^23.6.0",
     "npm": "^5.8.0",
     "pkg": "^4.3.4",
