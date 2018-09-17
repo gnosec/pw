@@ -60,4 +60,5 @@ typings/
 # custom
 bin
 .idea
+*.iml
 p
