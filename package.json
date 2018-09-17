@@ -15,7 +15,8 @@
     "test": "jest",
     "cover": "jest --coverage --collectCoverageFrom=lib/**/*.{js}",
     "clean": "rimraf bin",
-    "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin"
+    "build": "npm run test && npm run clean && pkg lib/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
+    "lint:fix": "prettier --write --single-quote"
   },
   "bin": {
     "pw": "lib/pw.js"
@@ -46,12 +47,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run test"
     }
   },
   "lint-staged": {
     "*.{js,json,md}": [
-      "prettier --write --single-quote",
+      "npm run lint:fix",
       "git add"
     ]
   }
