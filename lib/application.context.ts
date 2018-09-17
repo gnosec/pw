@@ -1,5 +1,7 @@
-const packageConfig = require('../package.json');
-const applicationConfig = require('./application.config')(packageConfig);
+
+import { applicationInfo } from './application.info';
+
+import { applicationConfig } from './application.config';
 
 const PasswordService = require('./domain/password/password.service');
 
@@ -91,7 +93,7 @@ const shell = new Shell(
   logger
 );
 
-const cli = new Cli(applicationConfig.application, openOrCreateCommand, shell);
+const cli = new Cli(applicationInfo, openOrCreateCommand, shell);
 
 module.exports = {
   cli
