@@ -58,6 +58,7 @@ typings/
 .env
 
 # custom
+dist
 bin
 .idea
 *.iml
