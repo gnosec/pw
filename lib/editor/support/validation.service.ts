@@ -1,17 +1,15 @@
+import { applicationConfig, ApplicationConfig } from '../../application.config';
+
 const {
   CharacterSetNames,
   CharacterSetsByName
 } = require('../../domain/password/character-sets');
 
-const DefaultKeyDelimiter = '.';
-
 /**
  * Responsible for user input validation
  */
-class ValidationService {
-  constructor(applicationConfig = { key: { delimiter: DefaultKeyDelimiter } }) {
-    this._applicationConfig = applicationConfig;
-    this._keyDelimiter = applicationConfig.key.delimiter || DefaultKeyDelimiter;
+export class ValidationService {
+  constructor(private applicationConfig: ApplicationConfig = applicationConfig) {
   }
 
   /**
@@ -25,8 +23,9 @@ class ValidationService {
    * 3. Password must maintain a certain percent variance in characters
    *
    * @param {string} input The master password to validate
+   * @returns {string[]} Error messages
    */
-  validateMasterPassword(input) {
+  validateMasterPassword(input: string): string[] {
     if (input == null) {
       return ['master password must not be null'];
     }
@@ -37,7 +36,7 @@ class ValidationService {
       minimumLength,
       maximumLength,
       minimumSpread
-    } = this._applicationConfig.masterPassword;
+    } = this.applicationConfig.masterPassword;
     if (input.length < minimumLength) {
       return [
         `master password must be a minimum of ${minimumLength} characters`
@@ -76,7 +75,7 @@ class ValidationService {
    * @param {string} key The key to validate
    * @returns {string[]} Error messages
    */
-  validateKey(key) {
+  validateKey(key: string): string[] {
     if (key == null) {
       return ['key must not be null'];
     }
@@ -90,7 +89,7 @@ class ValidationService {
     if (/\s/g.test(key)) {
       errors.push('key may not contain whitespace');
     }
-    const delimiter = this._keyDelimiter;
+    const delimiter = this.applicationConfig.key.delimiter;
     if (
       key.startsWith(delimiter) ||
       key.endsWith(delimiter) ||
@@ -116,7 +115,7 @@ class ValidationService {
    * @param {string} value The value to validate
    * @returns {string[]} Error messages
    */
-  validateValue(value) {
+  validateValue(value: string): string[] {
     if (value == null) {
       return ['value must not be null'];
     }
@@ -136,7 +135,7 @@ class ValidationService {
    * @param {string} path The path-like key
    * @return {string[]} An array of keys that will be overwritten or undercut by the provided path
    */
-  getConflicts(data, path) {
+  getConflicts(data: any, path: string): string[] {
     this._checkKey(path);
 
     const pathAncestorPermutations = this._getAncestorPermutations(path);
@@ -148,8 +147,9 @@ class ValidationService {
     // "set a.b" will overwrite key "a"
     // "set a.b" will overwrite key "a.b.c"
     const conflicts = [];
-    Object.entries(keyAncestorPermutationsByKey).forEach(
-      ([key, keyAncestorPermutations]) => {
+    Object.keys(keyAncestorPermutationsByKey).forEach(
+      key => {
+        const keyAncestorPermutations = keyAncestorPermutationsByKey[key];
         pathAncestorPermutations.forEach(permutation => {
           if (permutation === key) {
             conflicts.push(key);
@@ -173,7 +173,7 @@ class ValidationService {
    * @param {string} path The path-like key
    * @return {string[]} An array of keys matching either the full or partial path of the given key
    */
-  getMatches(data, path) {
+  getMatches(data: any, path: string): string[] {
     if (path == null || typeof path !== 'string') {
       return [];
     }
@@ -189,10 +189,12 @@ class ValidationService {
     // see if the given path overwrites an existing key
     // "delete a.b" should delete "a.b.c"
     // "delete "a.b" should not delete "a"
-    Object.entries(this._getPermutationsByKey(data)).forEach(
-      ([key, keyPermutations]) => {
+    const permutationsByKey = this._getPermutationsByKey(data);
+    Object.keys(permutationsByKey).forEach(
+      key => {
+        const keyPermutations = permutationsByKey[key];
         keyPermutations.forEach(keyPermutation => {
-          if (keyPermutation === tolerantPath && !matches.includes(key)) {
+          if (keyPermutation === tolerantPath && matches.indexOf(key) === -1) {
             matches.push(key);
           }
         });
@@ -208,9 +210,9 @@ class ValidationService {
    * @param {object} options The password generation options
    * @returns {string[]} Error messages
    */
-  validatePasswordOptions(options) {
+  validatePasswordOptions(options: PasswordOptions): string[] {
     const { length, charset } = options;
-    const { minimumLength, maximumLength } = this._applicationConfig.password;
+    const { minimumLength, maximumLength } = this.applicationConfig.password;
     const errors = [];
     if (length != null) {
       if (
@@ -235,18 +237,18 @@ class ValidationService {
     return errors;
   }
 
-  _checkKey(key) {
+  _checkKey(key: string): void {
     const errors = this.validateKey(key);
     if (errors.length) {
       throw new Error(errors[0]);
     }
   }
 
-  _split(path) {
-    return path.split(this._keyDelimiter);
+  _split(path: string): string[] {
+    return path.split(this.applicationConfig.key.delimiter);
   }
 
-  _getPermutations(path, includeKey = true) {
+  _getPermutations(path: string, includeKey: boolean = true): string[] {
     const offset = includeKey ? 0 : -1;
     const permutations = [];
     const parts = this._split(path);
@@ -260,7 +262,7 @@ class ValidationService {
     return permutations;
   }
 
-  _getPermutationsByKey(object, includeKey = true) {
+  _getPermutationsByKey(object: any, includeKey: boolean = true): any {
     const offset = includeKey ? 0 : -1;
     const permutationsByKey = {};
     Object.keys(object).forEach(key => {
@@ -278,11 +280,11 @@ class ValidationService {
     return permutationsByKey;
   }
 
-  _getAncestorPermutations(path) {
+  _getAncestorPermutations(path: string): string[] {
     return this._getPermutations(path, false);
   }
 
-  _getAncestorPermutationsByKey(object) {
+  _getAncestorPermutationsByKey(object: string): any {
     return this._getPermutationsByKey(object, false);
   }
 }

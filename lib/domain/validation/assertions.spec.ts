@@ -1,4 +1,4 @@
-const { notNull, notNullOrEmptyString } = require('./assertions');
+import { notNull, notNullOrEmptyString } from './assertions';
 
 describe('Assertions', () => {
   describe('notNull()', () => {
@@ -7,7 +7,7 @@ describe('Assertions', () => {
     });
 
     it('should throw error for undefined', () => {
-      expect(() => notNull()).toThrowError();
+      expect(() => notNull(undefined)).toThrowError();
     });
 
     it('should return input for valid input', () => {
@@ -22,11 +22,11 @@ describe('Assertions', () => {
     });
 
     it('should throw error for undefined', () => {
-      expect(() => notNullOrEmptyString()).toThrowError();
+      expect(() => notNullOrEmptyString(undefined)).toThrowError();
     });
 
     it('should throw error for empty string', () => {
-      expect(() => notNullOrEmptyString()).toThrowError();
+      expect(() => notNullOrEmptyString('')).toThrowError();
     });
 
     it('should throw error for non strings', () => {

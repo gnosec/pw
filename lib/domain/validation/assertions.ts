@@ -1,18 +1,13 @@
-function notNull(input, message) {
+export function notNull(input: any, message: string = 'input cannot be null') {
   if (input == null) {
     throw new Error(message);
   }
   return input;
 }
 
-function notNullOrEmptyString(input, message) {
+export function notNullOrEmptyString(input: any, message: string = 'input cannot be null or empty string') {
   if (input == null || typeof input !== 'string' || input.length === 0) {
     throw new Error(message);
   }
   return input;
 }
-
-module.exports = {
-  notNull,
-  notNullOrEmptyString
-};
