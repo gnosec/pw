@@ -1,6 +1,6 @@
 const Session = require('./session');
 const PasswordSafe = require('../domain/password-safe/password-safe');
-const { ChangeEvent } = require('../domain/events');
+const { ChangeEvent } = require('../domain/events/index');
 
 describe('Session', () => {
   const validFilepath = 'a';

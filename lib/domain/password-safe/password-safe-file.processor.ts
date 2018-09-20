@@ -1,11 +1,13 @@
-class PasswordSafeFileProcessor {
-  constructor(serializationService, encryptionService) {
-    this._encryptionService = encryptionService;
-    this._serializationService = serializationService;
+import { EncryptionService } from './encryption.service';
+import { PasswordSafe } from './password-safe';
+
+export class PasswordSafeFileProcessor {
+  constructor(private _serializationService: SerializationService,
+              private _encryptionService: EncryptionService) {
   }
 
-  toFile(passwordSafe, password) {
-    let data = passwordSafe;
+  toFile(passwordSafeMomento: Object, password: string): string {
+    let data: any = passwordSafeMomento;
     try {
       data = this._serializationService.serialize(data);
     } catch (error) {
@@ -19,8 +21,8 @@ class PasswordSafeFileProcessor {
     return data;
   }
 
-  fromFile(fileContent, password) {
-    let data = fileContent.toString();
+  fromFile(fileContent: string, password: string): PasswordSafe {
+    let data: any = fileContent.toString();
     try {
       data = this._encryptionService.decrypt(data, password);
     } catch (error) {
@@ -34,10 +36,8 @@ class PasswordSafeFileProcessor {
     return data;
   }
 
-  _onError(data, message, error) {
+  _onError(data: any, message: string, error: Error) {
     // TODO create error class to wrap error with custom message
     throw error;
   }
 }
-
-module.exports = PasswordSafeFileProcessor;

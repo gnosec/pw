@@ -1,10 +1,14 @@
+import { EditorConfig } from '../../application.config';
+
 const Vorpal = require('vorpal');
 const path = require('path');
 const getParameterNames = require('get-parameter-names');
 const LineEnding = require('os').EOL;
 
-class Shell {
-  constructor(editorConfig, commands, passwordSafeService, color, logger) {
+export class Shell {
+  constructor(private editorConfig: EditorConfig,
+              private commands: Command[],
+              passwordSafeService, color, logger) {
     this._editorConfig = editorConfig;
     this._commands = commands;
     this._passwordSafeService = passwordSafeService;

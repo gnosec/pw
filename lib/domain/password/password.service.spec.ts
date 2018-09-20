@@ -1,7 +1,8 @@
-const PasswordService = require('./password.service');
+import PasswordService from './password.service';
+import { PasswordConfig } from '../../application.config';
 
 describe('PasswordService', () => {
-  const config = {
+  const config: PasswordConfig = {
     minimumLength: 5,
     maximumLength: 10,
     defaultLength: 8,

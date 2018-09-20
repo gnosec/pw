@@ -1,6 +1,7 @@
-const PasswordSafe = require('./password-safe');
-const { ChangeEvent } = require('../events');
-const semver = require('semver');
+import PasswordSafe from './password-safe';
+import { ChangeEvent } from '../events/index';
+import semver from 'semver';
+
 const InvalidKeys = ['', null, undefined, 999, {}, [], () => {}, /regex/];
 const InvalidValues = InvalidKeys.concat();
 
@@ -33,11 +34,12 @@ describe('PasswordSafe', () => {
   });
 
   describe('set()', () => {
-    it('should throw error for invalid keys', () => {
-      InvalidKeys.forEach(invalidKey => {
+    InvalidKeys.forEach(invalidKey => {
+      it(`should throw error for invalid key: ${invalidKey}`, () => {
         expect(() => passwordSafe.set(invalidKey, 'validValue')).toThrowError();
       });
     });
+
 
     it('should throw error for invalid values', () => {
       InvalidValues.forEach(invalidValue => {

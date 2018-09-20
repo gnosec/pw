@@ -1,13 +1,15 @@
-const semver = require('semver');
-const PasswordSafe = require('./password-safe');
+import { FileService } from './file.service';
+import semver from 'semver';
+import PasswordSafe from './password-safe';
+import { Session } from '../../editor/session';
+import { PasswordSafeFileProcessor } from './password-safe-file.processor';
 
-class PasswordSafeService {
-  constructor(fileService, fileProcessor) {
-    this._fileService = fileService;
-    this._fileProcessor = fileProcessor;
+export class PasswordSafeService {
+  constructor(private _fileService: FileService,
+              private _fileProcessor: PasswordSafeFileProcessor) {
   }
 
-  openFile(filepath, password) {
+  openFile(filepath: string, password: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       this._fileService
         .open(filepath)
@@ -28,12 +30,12 @@ class PasswordSafeService {
     });
   }
 
-  createFile(filepath, password) {
+  createFile(filepath: string, password: string): Promise<PasswordSafe> {
     const passwordSafe = new PasswordSafe();
-    return this.saveFile({ filepath, password, passwordSafe });
+    return this.saveFile(<Session>{ filepath, password, passwordSafe });
   }
 
-  saveFile({ filepath, password, passwordSafe }) {
+  saveFile({ filepath, password, passwordSafe }: Session): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       try {
         const passwordSafeMomento = this._momento(passwordSafe);
@@ -51,7 +53,7 @@ class PasswordSafeService {
     });
   }
 
-  _migrate({ version, data }) {
+  _migrate({ version, data }: PasswordSafe): PasswordSafe {
     if (semver.lt(version, '2.0.0')) {
       data = data.reduce((dataV2, entryV1) => {
         dataV2[entryV1.key] = entryV1.value;
@@ -62,12 +64,10 @@ class PasswordSafeService {
     return new PasswordSafe(data);
   }
 
-  _momento(passwordSafe) {
+  _momento(passwordSafe: PasswordSafe): Object {
     return {
       version: passwordSafe.version,
       data: passwordSafe.data
     };
   }
 }
-
-module.exports = PasswordSafeService;

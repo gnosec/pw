@@ -1,6 +1,6 @@
-const PasswordSafeService = require('./password-safe.service');
-const PasswordSafeFileProcessor = require('./password-safe-file.processor');
-const FileService = require('./file.service');
+import PasswordSafeService from './password-safe.service';
+import PasswordSafeFileProcessor from './password-safe-file.processor';
+import FileService from './file.service';
 
 describe('PasswordSafeService', () => {
   describe('openFile', () => {

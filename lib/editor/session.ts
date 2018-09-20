@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ChangeEvent } from '../domain/events';
+import { ChangeEvent } from '../domain/events/index';
 import {
   notNull,
   notNullOrEmptyString

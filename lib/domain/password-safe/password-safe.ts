@@ -1,6 +1,6 @@
-const EventEmitter = require('events');
-const { ChangeEvent } = require('../events');
-const { notNullOrEmptyString } = require('../validation/assertions');
+import EventEmitter from 'events';
+import { ChangeEvent } from '../events';
+import { notNullOrEmptyString } from '../validation/assertions';
 
 const SchemaVersion = '2.0.0';
 const _checkKey = input =>
@@ -8,38 +8,43 @@ const _checkKey = input =>
 const _checkValue = input =>
   notNullOrEmptyString(input, 'value must not be null or empty');
 
-class PasswordSafe {
-  constructor(data = {}) {
+export class PasswordSafe {
+
+  private _version: string;
+  private _data: Object;
+  private _events: EventEmitter;
+
+  constructor(data: Object = {}) {
     this._version = SchemaVersion;
     this._data = data;
     this._events = new EventEmitter();
   }
 
-  get version() {
+  get version(): string {
     return this._version;
   }
 
-  get data() {
+  get data(): Object {
     return this._data;
   }
 
-  get events() {
+  get events(): EventEmitter {
     return this._events;
   }
 
-  get keys() {
+  get keys(): string[] {
     return Object.keys(this._data);
   }
 
-  has(key) {
+  has(key: string): boolean {
     return this._data[_checkKey(key)] != null;
   }
 
-  get(key) {
+  get(key: string): string {
     return this._data[_checkKey(key)];
   }
 
-  set(key, value) {
+  set(key: string, value: string): void {
     const previousValue = this._data[_checkKey(key)];
     if (previousValue !== _checkValue(value)) {
       this._data[key] = value;
@@ -47,7 +52,7 @@ class PasswordSafe {
     }
   }
 
-  delete(key) {
+  delete(key: string): void {
     const previousValue = this.get(_checkKey(key));
     if (previousValue !== undefined) {
       delete this._data[key];
@@ -55,5 +60,3 @@ class PasswordSafe {
     }
   }
 }
-
-module.exports = PasswordSafe;

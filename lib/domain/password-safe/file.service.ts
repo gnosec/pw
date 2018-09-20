@@ -1,13 +1,14 @@
-const fs = require('fs');
-const mkdirp = require('mkdirp');
-const path = require('path');
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+import path from 'path';
 
-class FileService {
-  constructor(fileOptions = {}) {
-    this._fileOptions = fileOptions;
+export type FileOptions = { encoding?: string | null; mode?: number | string; flag?: string; } | string | undefined | null;
+
+export class FileService {
+  constructor(private fileOptions: FileOptions = {}) {
   }
 
-  exists(filepath) {
+  exists(filepath: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       fs.exists(filepath || '', exists => {
         resolve(exists);
@@ -15,9 +16,9 @@ class FileService {
     });
   }
 
-  open(filepath) {
+  open(filepath: string): Promise<string | Buffer> {
     return new Promise((resolve, reject) => {
-      fs.readFile(filepath, this._fileOptions, (error, fileContent) => {
+      fs.readFile(filepath, this.fileOptions, (error, fileContent) => {
         if (error) {
           reject(error);
         } else {
@@ -27,13 +28,13 @@ class FileService {
     });
   }
 
-  save(filepath, fileContent) {
+  save(filepath: string, fileContent: any): Promise<void> {
     return new Promise((resolve, reject) => {
       mkdirp(path.dirname(filepath), error => {
         if (error) {
           reject(error);
         } else {
-          fs.writeFile(filepath, fileContent, this._fileOptions, error => {
+          fs.writeFile(filepath, fileContent, this.fileOptions, error => {
             if (error) {
               reject(error);
             } else {
@@ -45,5 +46,3 @@ class FileService {
     });
   }
 }
-
-module.exports = FileService;
