@@ -1,21 +1,16 @@
-const Session = require('../../session');
-const LineEnding = require('os').EOL;
+import { PasswordSafeService } from '../../../domain/password-safe/password-safe.service';
+import { ValidationService } from '../../support/validation.service';
+import { PromptService } from '../../support/prompt.service';
+import { Session } from '../../session';
+import { EOL as LineEnding } from 'os';
 
-class CreateCommand {
-  constructor(
-    masterPasswordConfig,
-    passwordSafeService,
-    validationService,
-    promptService
-  ) {
-    this._masterPasswordConfig = masterPasswordConfig;
-    this._passwordSafeService = passwordSafeService;
-    this._validationService = validationService;
-    this._promptService = promptService;
+export class CreateCommand {
+  constructor(private _passwordSafeService: PasswordSafeService,
+              private _validationService: ValidationService,
+              private _promptService: PromptService) {
   }
 
-  execute(filepath) {
-    const { minimumLength } = this._masterPasswordConfig;
+  execute(filepath: string): Promise<Session> {
     return this._promptService
       .prompt([
         {
@@ -55,7 +50,7 @@ class CreateCommand {
           }
         }
       ])
-      .then(({ password }) => {
+      .then(({password}) => {
         return this._passwordSafeService
           .createFile(filepath, password)
           .then(passwordSafe =>
@@ -64,5 +59,3 @@ class CreateCommand {
       });
   }
 }
-
-module.exports = CreateCommand;

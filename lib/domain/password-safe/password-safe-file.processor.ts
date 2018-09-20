@@ -1,12 +1,13 @@
 import { EncryptionService } from './encryption.service';
 import { PasswordSafe } from './password-safe';
+import { SerializationService } from './serialization.service';
 
 export class PasswordSafeFileProcessor {
   constructor(private _serializationService: SerializationService,
               private _encryptionService: EncryptionService) {
   }
 
-  toFile(passwordSafeMomento: Object, password: string): string {
+  toFile(passwordSafeMomento: any, password: string): string {
     let data: any = passwordSafeMomento;
     try {
       data = this._serializationService.serialize(data);
@@ -21,7 +22,7 @@ export class PasswordSafeFileProcessor {
     return data;
   }
 
-  fromFile(fileContent: string, password: string): PasswordSafe {
+  fromFile(fileContent: string | Buffer, password: string): PasswordSafe {
     let data: any = fileContent.toString();
     try {
       data = this._encryptionService.decrypt(data, password);

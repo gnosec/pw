@@ -1,4 +1,4 @@
-import FileService from './file.service';
+import { FileService } from './file.service';
 
 describe('FileService', () => {
   describe('exists', () => {

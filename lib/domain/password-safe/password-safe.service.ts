@@ -1,6 +1,6 @@
 import { FileService } from './file.service';
 import semver from 'semver';
-import PasswordSafe from './password-safe';
+import { PasswordSafe } from './password-safe';
 import { Session } from '../../editor/session';
 import { PasswordSafeFileProcessor } from './password-safe-file.processor';
 
@@ -24,7 +24,8 @@ export class PasswordSafeService {
           } catch (error) {
             reject(error);
           }
-          return fileContent;
+          // is this needed?
+          // return fileContent;
         })
         .catch(reject);
     });
@@ -55,7 +56,7 @@ export class PasswordSafeService {
 
   _migrate({ version, data }: PasswordSafe): PasswordSafe {
     if (semver.lt(version, '2.0.0')) {
-      data = data.reduce((dataV2, entryV1) => {
+      data = (<Array>data).reduce((dataV2, entryV1) => {
         dataV2[entryV1.key] = entryV1.value;
         return dataV2;
       }, {});

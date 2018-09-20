@@ -1,36 +1,36 @@
 import { applicationInfo } from './application.info';
 import { applicationConfig } from './application.config';
 
-const PasswordService = require('./domain/password/password.service');
+import { PasswordService } from './domain/password/password.service';
 
-const FileService = require('./domain/password-safe/file.service');
-const PasswordSafeService = require('./domain/password-safe/password-safe.service');
-const SerializationService = require('./domain/password-safe/serialization.service');
-const EncryptionService = require('./domain/password-safe/encryption.service');
-const PasswordSafeFileProcessor = require('./domain/password-safe/password-safe-file.processor');
+import { FileService } from './domain/password-safe/file.service';
+import { PasswordSafeService } from './domain/password-safe/password-safe.service';
+import { SerializationService } from './domain/password-safe/serialization.service';
+import { EncryptionService } from './domain/password-safe/encryption.service';
+import { PasswordSafeFileProcessor } from './domain/password-safe/password-safe-file.processor';
 
-const ValidationService = require('./editor/support/validation.service');
-const ClipboardService = require('./editor/support/clipboard.service');
-const Color = require('./editor/support/color');
-const Logger = require('./editor/support/logger');
-const PromptService = require('./editor/support/prompt.service');
+import { ValidationService } from './editor/support/validation.service';
+import { ClipboardService } from './editor/support/clipboard.service';
+import { Color } from './editor/support/color';
+import { Logger } from './editor/support/logger';
+import { PromptService } from './editor/support/prompt.service';
 
-const Shell = require('./editor/shell/shell');
-const ChangeMasterPasswordCommand = require('./editor/shell/command/change-master-password.command');
-const GenerateCommand = require('./editor/shell/command/generate.command');
-const SetCommand = require('./editor/shell/command/set.command');
-const GetCommand = require('./editor/shell/command/get.command');
-const CopyCommand = require('./editor/shell/command/copy.command');
-const MoveCommand = require('./editor/shell/command/move.command');
-const DeleteCommand = require('./editor/shell/command/delete.command');
-const ListCommand = require('./editor/shell/command/list.command');
-const TreeCommand = require('./editor/shell/command/tree.command');
-const EchoCommand = require('./editor/shell/command/echo.command');
+import { Shell } from './editor/shell/shell';
+import { ChangeMasterPasswordCommand } from './editor/shell/command/change-master-password.command';
+import { GenerateCommand } from './editor/shell/command/generate.command';
+import { SetCommand } from './editor/shell/command/set.command';
+import { GetCommand } from './editor/shell/command/get.command';
+import { CopyCommand } from './editor/shell/command/copy.command';
+import { MoveCommand } from './editor/shell/command/move.command';
+import { DeleteCommand } from './editor/shell/command/delete.command';
+import { ListCommand } from './editor/shell/command/list.command';
+import { TreeCommand } from './editor/shell/command/tree.command';
+import { EchoCommand } from './editor/shell/command/echo.command';
 
-const Cli = require('./editor/cli/cli');
-const CreateCommand = require('./editor/cli/command/create.command');
-const OpenCommand = require('./editor/cli/command/open.command');
-const OpenOrCreateCommand = require('./editor/cli/command/open-or-create.command');
+import { Cli } from './editor/cli/cli';
+import { CreateCommand } from './editor/cli/command/create.command';
+import { OpenCommand } from './editor/cli/command/open.command';
+import { OpenOrCreateCommand } from './editor/cli/command/open-or-create.command';
 
 const passwordService = new PasswordService(applicationConfig.password);
 
@@ -50,7 +50,6 @@ const validationService = new ValidationService(applicationConfig);
 const promptService = new PromptService();
 
 const createCommand = new CreateCommand(
-  applicationConfig.masterPassword,
   passwordSafeService,
   validationService,
   promptService

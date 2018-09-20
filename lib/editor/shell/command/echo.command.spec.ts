@@ -1,10 +1,13 @@
-const GetCommand = require('./get.command');
-const ClipboardService = require('../../support/clipboard.service');
-const PasswordSafe = require('../../../domain/password-safe/password-safe');
+import { EchoCommand } from './echo.command';
+import { Logger } from '../../support/logger';
+import { Color } from '../../support/color';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { EOL as LineEnding } from 'os';
+import { Session } from '../../session';
 
-describe('GetCommand', () => {
-  const clipboardService = new ClipboardService();
-  const command = new GetCommand(clipboardService);
+describe('EchoCommand', () => {
+  const logger = new Logger(new Color({}));
+  const command = new EchoCommand(logger);
 
   describe('definition', () => {
     it('should return a definition', () => {
@@ -15,7 +18,7 @@ describe('GetCommand', () => {
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
       const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
-      expect(command.autocomplete({ passwordSafe })).toEqual(passwordSafe.keys);
+      expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
 
@@ -52,15 +55,15 @@ describe('GetCommand', () => {
   });
 
   describe('execute()', () => {
-    it('should copy value to clipboard', done => {
+    it('should log value of key', done => {
       const data = { key: 'value' },
         key = 'key',
         value = 'value';
 
-      clipboardService.copy = jest.fn(() => value);
+      logger.log = jest.fn();
 
       command.execute(new PasswordSafe(data), key).then(() => {
-        expect(clipboardService.copy).toHaveBeenCalledWith(value);
+        expect(logger.log).toHaveBeenCalledWith(`${value}${LineEnding}`);
         done();
       });
     });

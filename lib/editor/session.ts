@@ -4,6 +4,7 @@ import {
   notNull,
   notNullOrEmptyString
 } from '../domain/validation/assertions';
+import { PasswordSafe } from '../domain/password-safe/password-safe';
 
 const _checkFilepath = input =>
   notNullOrEmptyString(input, 'filepath may not be null or empty');

@@ -1,4 +1,4 @@
-import ChangeEvent from './change.event';
+import { ChangeEvent } from './change.event';
 
 function assertReadonly(object: any, property: string, newValue: any = null): void {
   const originalValue = object[property];

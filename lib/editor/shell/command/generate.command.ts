@@ -1,25 +1,23 @@
-const LineEnding = require('os').EOL;
-const {
+import { EOL as LineEnding } from 'os';
+import {
   CharacterSetNames
-} = require('../../../domain/password/character-sets');
+} from '../../../domain/password/character-sets';
+import { ValidationService } from '../../support/validation.service';
+import { PasswordOptions, PasswordService } from '../../../domain/password/password.service';
+import { PasswordConfig } from '../../../application.config';
+import { ClipboardService } from '../../support/clipboard.service';
+import { Command, CommandDefinition } from './command';
+import { Session } from '../../session';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
-class GenerateCommand {
-  constructor(
-    validationService,
-    passwordService,
-    passwordConfig,
-    clipboardService
-  ) {
-    this._validationService = validationService;
-    this._passwordService = passwordService;
-    this._passwordConfig = passwordConfig;
-    this._clipboardService = clipboardService;
+export class GenerateCommand implements Command {
+  constructor(private _validationService: ValidationService,
+    private _passwordService: PasswordService,
+    private _passwordConfig: PasswordConfig,
+    private _clipboardService: ClipboardService) {
   }
 
-  /**
-   * Command definition metadata
-   */
-  get definition() {
+  get definition(): CommandDefinition {
     const {
       minimumLength,
       maximumLength,
@@ -52,7 +50,7 @@ class GenerateCommand {
     };
   }
 
-  validate({ passwordSafe, key, options }) {
+  validate({ passwordSafe, key, options }: Session): string[] {
     if (key != null) {
       const keyErrors = this._validationService.validateKey(key);
       if (keyErrors.length) {
@@ -80,7 +78,7 @@ class GenerateCommand {
     return [];
   }
 
-  execute(passwordSafe, key, options) {
+  execute(passwordSafe: PasswordSafe, key: string, options: PasswordOptions): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       const password = this._passwordService.createPassword(options);
       if (key != null) {
@@ -91,5 +89,3 @@ class GenerateCommand {
     });
   }
 }
-
-module.exports = GenerateCommand;

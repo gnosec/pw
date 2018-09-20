@@ -1,7 +1,11 @@
-const commander = require('commander');
+import commander from 'commander';
+import { ApplicationInfo } from '../../application.info';
+import { Shell } from '../shell/shell';
 
-class Cli {
-  constructor({ name, version }, openOrCreateCommand, shell) {
+export class Cli {
+  constructor({ name, version }: ApplicationInfo,
+              openOrCreateCommand: OpenOrCreateCommand,
+              shell: Shell) {
     commander
       .usage(`${name} <file>`)
       .version(version)
@@ -14,7 +18,7 @@ class Cli {
       });
   }
 
-  parse(programArguments) {
+  parse(programArguments: string[]): void {
     if (programArguments.slice(2).length) {
       commander.parse(programArguments);
     } else {
@@ -22,7 +26,7 @@ class Cli {
     }
   }
 
-  _onErrors(error) {
+  _onErrors(error: Error | Error[]): void {
     Array.isArray(error)
       ? error.forEach(errorMessage => console.error(`Error: ${errorMessage}`))
       : console.error(
@@ -30,5 +34,3 @@ class Cli {
         ); /* DEBUG console.error('Internal Error: ', error)*/
   }
 }
-
-module.exports = Cli;

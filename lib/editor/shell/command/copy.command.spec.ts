@@ -1,6 +1,7 @@
-const CopyCommand = require('./copy.command');
-const ValidationService = require('../../support/validation.service');
-const PasswordSafe = require('../../../domain/password-safe/password-safe');
+import { CopyCommand } from './copy.command';
+import { ValidationService } from '../../support/validation.service';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { Session } from '../../session';
 
 describe('CopyCommand', () => {
   const validationService = new ValidationService();
@@ -21,7 +22,7 @@ describe('CopyCommand', () => {
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
       const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
-      expect(command.autocomplete({ passwordSafe })).toEqual(passwordSafe.keys);
+      expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
 

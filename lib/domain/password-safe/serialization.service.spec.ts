@@ -1,4 +1,4 @@
-const SerializationService = require('./serialization.service');
+import { SerializationService } from './serialization.service';
 
 describe('SerializationService', () => {
   const service = new SerializationService();

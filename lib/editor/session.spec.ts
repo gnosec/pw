@@ -1,6 +1,6 @@
-const Session = require('./session');
-const PasswordSafe = require('../domain/password-safe/password-safe');
-const { ChangeEvent } = require('../domain/events/index');
+import { Session } from './session';
+import { PasswordSafe } from '../domain/password-safe/password-safe';
+import { ChangeEvent } from '../domain/events/index';
 
 describe('Session', () => {
   const validFilepath = 'a';
@@ -25,48 +25,20 @@ describe('Session', () => {
     it('should create with valid arguments', () => {
       expect(() => createValidSession()).not.toThrowError();
     });
-
-    it('should throw error for invalid filepaths', () => {
-      InvalidFilepathsAndPasswords.forEach(invalidInput => {
+    InvalidFilepathsAndPasswords.forEach(invalidInput => {
+      it(`should throw error for invalid filepath: ${invalidInput}`, () => {
         expect(
-          () => new Session(invalidInput, validPassword, validPasswordSafe)
+          () => new Session(<any>invalidInput, validPassword, validPasswordSafe)
         ).toThrowError();
       });
     });
+    InvalidFilepathsAndPasswords.forEach(invalidInput => {
 
-    it('should throw error for invalid passwords', () => {
-      InvalidFilepathsAndPasswords.forEach(invalidInput => {
+      it(`should throw error for invalid password: ${invalidInput}`, () => {
         expect(
-          () => new Session(validFilepath, invalidInput, validPasswordSafe)
+          () => new Session(validFilepath, <any>invalidInput, validPasswordSafe)
         ).toThrowError();
       });
-    });
-  });
-
-  describe('filepath', () => {
-    it('should be readonly', () => {
-      const session = createValidSession();
-      const previousValue = session.filepath;
-      session.filepath = null;
-      expect(session.filepath).toBe(previousValue);
-    });
-  });
-
-  describe('events', () => {
-    it('should be readonly', () => {
-      const session = createValidSession();
-      const previousValue = session.events;
-      session.events = null;
-      expect(session.events).toBe(previousValue);
-    });
-  });
-
-  describe('passwordSafe', () => {
-    it('should be readonly', () => {
-      const session = createValidSession();
-      const previousValue = session.passwordSafe;
-      session.passwordSafe = null;
-      expect(session.passwordSafe).toBe(previousValue);
     });
   });
 

@@ -1,18 +1,13 @@
-const ChangeMasterPasswordCommand = require('./change-master-password.command');
-const ValidationService = require('../../support/validation.service');
-const PromptService = require('../../support/prompt.service');
-const PasswordSafeService = require('../../../domain/password-safe/password-safe.service');
+import { ChangeMasterPasswordCommand } from './change-master-password.command';
+import { ValidationService } from '../../support/validation.service';
+import { PromptService } from '../../support/prompt.service';
 
 describe('ChangeMasterPasswordCommand', () => {
-  const masterPasswordConfig = {};
   const validationService = new ValidationService();
   const promptService = new PromptService();
-  const passwordSafeService = new PasswordSafeService();
   const command = new ChangeMasterPasswordCommand(
-    masterPasswordConfig,
     validationService,
-    promptService,
-    passwordSafeService
+    promptService
   );
 
   beforeEach(() => {
@@ -27,13 +22,13 @@ describe('ChangeMasterPasswordCommand', () => {
 
   describe('autocomplete', () => {
     it('should not autocomplete', () => {
-      expect(command.autocomplete).toBeUndefined();
+      expect(command['autocomplete']).toBeUndefined();
     });
   });
 
   describe('validate()', () => {
     it('should not validate', () => {
-      expect(command.validate).toBeUndefined();
+      expect(command['validate']).toBeUndefined();
     });
   });
 

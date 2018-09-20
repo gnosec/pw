@@ -5,7 +5,4 @@ export interface ApplicationInfo {
   readonly version: string;
 }
 
-export const applicationInfo: ApplicationInfo = {
-  name: Object.keys(packageConfig.bin)[0],
-  version: packageConfig.version
-}
+export const applicationInfo: ApplicationInfo = <ApplicationInfo>packageConfig;

@@ -1,4 +1,4 @@
-import PasswordSafe from './password-safe';
+import { PasswordSafe } from './password-safe';
 import { ChangeEvent } from '../events/index';
 import semver from 'semver';
 
@@ -11,46 +11,31 @@ describe('PasswordSafe', () => {
       const { version } = new PasswordSafe();
       expect(semver.valid(version)).toBe(version);
     });
-
-    it('should be readonly', () => {
-      const passwordSafe = new PasswordSafe();
-      const previousValue = passwordSafe.version;
-      passwordSafe.version = '0.0.0';
-      expect(passwordSafe.version).toBe(previousValue);
-    });
   });
 
   describe('events', () => {
     it('should expose events', () => {
       expect(new PasswordSafe().events).toBeDefined();
     });
-
-    it('should be readonly', () => {
-      const passwordSafe = new PasswordSafe();
-      const previousValue = passwordSafe.events;
-      passwordSafe.events = null;
-      expect(passwordSafe.events).toBe(previousValue);
-    });
   });
 
   describe('set()', () => {
     InvalidKeys.forEach(invalidKey => {
       it(`should throw error for invalid key: ${invalidKey}`, () => {
-        expect(() => passwordSafe.set(invalidKey, 'validValue')).toThrowError();
+        expect(() => new PasswordSafe().set(<any>invalidKey, 'validValue')).toThrowError();
       });
     });
 
-
-    it('should throw error for invalid values', () => {
-      InvalidValues.forEach(invalidValue => {
+    InvalidValues.forEach(invalidValue => {
+      it(`should throw error for invalid value: ${invalidValue}`, () => {
         expect(() =>
-          passwordSafe.set('validPath', invalidValue)
+          new PasswordSafe().set('validPath', <any>invalidValue)
         ).toThrowError();
       });
     });
 
     it('should set the specified value', () => {
-      const data = {};
+      const data = <any>{};
       const passwordSafe = new PasswordSafe(data);
 
       passwordSafe.set('key', 'value');
@@ -93,9 +78,9 @@ describe('PasswordSafe', () => {
   });
 
   describe('has()', () => {
-    it('should throw error for invalid keys', () => {
-      InvalidKeys.forEach(invalidKey => {
-        expect(() => passwordSafe.has(invalidKey)).toThrowError();
+    InvalidKeys.forEach(invalidKey => {
+      it(`should throw error for invalid key: ${invalidKey}`, () => {
+        expect(() => new PasswordSafe().has(<any>invalidKey)).toThrowError();
       });
     });
 
@@ -115,9 +100,9 @@ describe('PasswordSafe', () => {
   });
 
   describe('get()', () => {
-    it('should throw error for invalid keys', () => {
-      InvalidKeys.forEach(invalidKey => {
-        expect(() => passwordSafe.get(invalidKey)).toThrowError();
+    InvalidKeys.forEach(invalidKey => {
+      it(`should throw error for invalid key: ${invalidKey}`, () => {
+        expect(() => new PasswordSafe().get(<any>invalidKey)).toThrowError();
       });
     });
 
@@ -125,7 +110,7 @@ describe('PasswordSafe', () => {
       const data = { key: 'value' };
       const passwordSafe = new PasswordSafe(data);
 
-      expect(passwordSafe.get('key', 'value')).toBe(data.key);
+      expect(passwordSafe.get('key')).toBe(data.key);
     });
 
     it('should return undefined when it does not match', () => {
@@ -142,9 +127,9 @@ describe('PasswordSafe', () => {
   });
 
   describe('delete()', () => {
-    it('should throw error for invalid keys', () => {
-      InvalidKeys.forEach(invalidKey => {
-        expect(() => passwordSafe.delete(invalidKey)).toThrowError();
+    InvalidKeys.forEach(invalidKey => {
+      it(`should throw error for invalid key: ${invalidKey}`, () => {
+        expect(() => new PasswordSafe().delete(<any>invalidKey)).toThrowError();
       });
     });
 

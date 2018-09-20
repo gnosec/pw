@@ -1,8 +1,9 @@
-const ValidationService = require('./validation.service');
-const { CharacterSetsByName } = require('../../domain/password/character-sets');
+import { ValidationService } from './validation.service';
+import { CharacterSetsByName } from '../../domain/password/character-sets';
+import { ApplicationConfig } from '../../application.config';
 
 describe('ValidationService', () => {
-  const applicationConfig = {
+  const applicationConfig = <ApplicationConfig>{
     key: {
       delimiter: '.'
     },
@@ -32,17 +33,17 @@ describe('ValidationService', () => {
   ]);
 
   describe('validateKey()', () => {
-    it('should return error for invalid keys', () => {
-      InvalidKeys.forEach(invalid => {
-        expect(service.validateKey(invalid).length).toBe(1);
+    InvalidKeys.forEach(invalid => {
+      it(`should return error for invalid key: ${invalid}`, () => {
+        expect(service.validateKey(<any>invalid).length).toBe(1);
       });
     });
   });
 
   describe('validateValue()', () => {
-    it('should return error for invalid values', () => {
-      InvalidValues.forEach(invalid => {
-        expect(service.validateValue(invalid).length).toBe(1);
+    InvalidValues.forEach(invalid => {
+      it(`should return error for invalid value: ${invalid}`, () => {
+        expect(service.validateValue(<any>invalid).length).toBe(1);
       });
     });
   });
@@ -54,9 +55,9 @@ describe('ValidationService', () => {
       other: 1
     };
 
-    it('should throw error for invalid paths', () => {
-      InvalidKeys.forEach(invalid => {
-        expect(() => service.getConflicts(data, invalid)).toThrowError();
+    InvalidKeys.forEach(invalid => {
+      it(`should throw error for invalid path: ${invalid}`, () => {
+        expect(() => service.getConflicts(data, <any>invalid)).toThrowError();
       });
     });
 
@@ -83,9 +84,9 @@ describe('ValidationService', () => {
       '..invalid..': 1
     };
 
-    it('should return empty for invalid keys', () => {
-      InvalidKeys.forEach(invalid => {
-        expect(service.getMatches(data, invalid)).toEqual([]);
+    InvalidKeys.forEach(invalid => {
+      it(`should return empty for invalid key: ${invalid}`, () => {
+        expect(service.getMatches(data, <any>invalid)).toEqual([]);
       });
     });
 
@@ -220,7 +221,7 @@ describe('ValidationService', () => {
     it('should accept valid charset', () => {
       expect(
         service.validatePasswordOptions({
-          charset: CharacterSetsByName.Numeric
+          charset: CharacterSetsByName['Numeric']
         }).length
       ).toBe(0);
     });

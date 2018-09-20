@@ -1,33 +1,25 @@
-const LineEnding = require('os').EOL;
+import { EOL as LineEnding } from 'os';
+import {Session} from "../../session";
+import { Command, CommandDefinition } from './command';
+import {ValidationService} from "../../support/validation.service";
+import {PromptService} from "../../support/prompt.service";
 
 /**
  * This command changes the master password of the password safe file
  */
-class ChangeMasterPasswordCommand {
-  constructor(
-    validationService,
-    promptService
-  ) {
-    this._validationService = validationService;
-    this._promptService = promptService;
+export class ChangeMasterPasswordCommand implements Command {
+  constructor(private _validationService: ValidationService,
+              private _promptService: PromptService) {
   }
 
-  /**
-   * Metadata about the command
-   */
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'change-master-password',
       description: 'Changes the master password of the file'
     };
   }
 
-  /**
-   * Performs the command
-   *
-   * @param {*} session the active shell session
-   */
-  execute(session) {
+  execute(session: Session): Promise<Session> {
     return this._promptService
       .prompt([
         {
@@ -73,5 +65,3 @@ class ChangeMasterPasswordCommand {
       });
   }
 }
-
-module.exports = ChangeMasterPasswordCommand;

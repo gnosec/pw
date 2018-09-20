@@ -1,9 +1,13 @@
-class DeleteCommand {
-  constructor(validationService) {
-    this._validationService = validationService;
+import { ValidationService } from '../../support/validation.service';
+import { CommandDefinition } from './command';
+import { Session } from '../../session';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+
+export class DeleteCommand {
+  constructor(private _validationService: ValidationService) {
   }
 
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'rm <key>',
       aliases: ['del', 'delete'],
@@ -11,11 +15,11 @@ class DeleteCommand {
     };
   }
 
-  autocomplete({ passwordSafe }) {
+  autocomplete({ passwordSafe }: Session): string[] {
     return passwordSafe.keys;
   }
 
-  validate({ passwordSafe, key }) {
+  validate({ passwordSafe, key }: any): string[] {
     const matches = this._validationService.getMatches(passwordSafe.data, key);
     if (!matches.length) {
       return [`"${key}" is not a key`];
@@ -23,7 +27,7 @@ class DeleteCommand {
     return [];
   }
 
-  execute(passwordSafe, key) {
+  execute(passwordSafe: PasswordSafe, key: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       this._validationService
         .getMatches(passwordSafe.data, key)
@@ -34,5 +38,3 @@ class DeleteCommand {
     });
   }
 }
-
-module.exports = DeleteCommand;

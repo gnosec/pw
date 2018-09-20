@@ -1,12 +1,13 @@
-const Session = require('../../session');
+import { Session } from '../../session';
+import { PasswordSafeService } from '../../../domain/password-safe/password-safe.service';
+import { PromptService } from '../../support/prompt.service';
 
-class OpenCommand {
-  constructor(passwordSafeService, promptService) {
-    this._passwordSafeService = passwordSafeService;
-    this._promptService = promptService;
+export class OpenCommand {
+  constructor(private _passwordSafeService: PasswordSafeService,
+              private _promptService: PromptService) {
   }
 
-  execute(filepath) {
+  execute(filepath: string): Promise<Session> {
     return this._promptService
       .prompt([
         {
@@ -24,5 +25,3 @@ class OpenCommand {
       });
   }
 }
-
-module.exports = OpenCommand;

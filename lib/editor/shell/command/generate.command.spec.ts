@@ -1,18 +1,20 @@
-const GenerateCommand = require('./generate.command');
-const ClipboardService = require('../../support/clipboard.service');
-const ValidationService = require('../../support/validation.service');
-const PasswordService = require('../../../domain/password/password.service');
-const PasswordSafe = require('../../../domain/password-safe/password-safe');
+import { GenerateCommand } from './generate.command';
+import { ClipboardService } from '../../support/clipboard.service';
+import { ValidationService } from '../../support/validation.service';
+import { PasswordService } from '../../../domain/password/password.service';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordConfig } from '../../../application.config';
+import { Session } from '../../session';
 
 describe('GenerateCommand', () => {
-  const validationService = new ValidationService();
-  const passwordService = new PasswordService();
-  const passwordConfig = {
+  const passwordConfig: PasswordConfig = {
     minimumLength: 1,
     maximumLength: 2,
     defaultLength: 1,
     defaultCharset: 'numeric'
   };
+  const passwordService = new PasswordService(passwordConfig);
+  const validationService = new ValidationService();
   const clipboardService = new ClipboardService();
   const command = new GenerateCommand(
     validationService,
@@ -35,19 +37,19 @@ describe('GenerateCommand', () => {
 
   describe('autocomplete()', () => {
     it('should not have autocomplete', () => {
-      expect(command.autocomplete).toBeUndefined();
+      expect(command['autocomplete']).toBeUndefined();
     });
   });
 
   describe('validate()', () => {
     const Errors = ['error1', 'error2'];
-    const NoKey = {
+    const NoKey: Session = <Session>{
       passwordSafe: {
         data: {}
       },
       options: {}
     };
-    const DefaultArgs = Object.assign({}, NoKey, { key: 'key' });
+    const DefaultArgs: any = Object.assign({}, NoKey, { key: 'key' });
 
     it('should not validate key when absent', () => {
       command.validate(NoKey);
