@@ -27,7 +27,7 @@ export class Cli {
     }
   }
 
-  _onErrors(error: Error | Error[]): void {
+  private _onErrors(error: Error | Error[]): void {
     Array.isArray(error)
       ? error.forEach(errorMessage => console.error(`Error: ${errorMessage}`))
       : console.error(

@@ -1,10 +1,11 @@
 import { Session } from '../../session';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
 export interface Command {
   readonly definition: CommandDefinition;
   autocomplete?(session: Session): string[];
   validate?(input: any): string[];
-  // execute(...args): Promise<PasswordSafe>;
+  execute(...args: any[]): Promise<PasswordSafe | Session>;
 }
 
 export interface CommandDefinition {
