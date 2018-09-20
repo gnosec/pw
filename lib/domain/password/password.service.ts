@@ -1,5 +1,5 @@
 import { PasswordConfig } from '../../application.config';
-import crypto from 'crypto';
+import { randomBytes } from 'crypto';
 import { CharacterSetsByName, Spaces } from './character-sets';
 
 export interface PasswordOptions {
@@ -20,7 +20,7 @@ export class PasswordService {
   createPassword(options: PasswordOptions = {}): string {
     const { length, characters } = this._createSettings(options);
     const array = [];
-    for (let value in crypto.randomBytes(length)) {
+    for (let value in randomBytes(length)) {
       array.push(value);
     }
     return array

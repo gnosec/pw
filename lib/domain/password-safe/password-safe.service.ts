@@ -56,7 +56,7 @@ export class PasswordSafeService {
 
   _migrate({ version, data }: PasswordSafe): PasswordSafe {
     if (semver.lt(version, '2.0.0')) {
-      data = (<Array>data).reduce((dataV2, entryV1) => {
+      data = (<Array<any>>data).reduce((dataV2, entryV1) => {
         dataV2[entryV1.key] = entryV1.value;
         return dataV2;
       }, {});

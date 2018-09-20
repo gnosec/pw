@@ -4,14 +4,15 @@ import { PasswordSafeService } from '../../domain/password-safe/password-safe.se
 import { Color } from '../support/color';
 import { Logger } from '../support/logger';
 import Vorpal from 'vorpal';
-import path from 'path';
+import { basename } from 'path';
 import getParameterNames from 'get-parameter-names';
 import { EOL as LineEnding } from 'os';
+import Timer = NodeJS.Timer;
 
 export class Shell {
 
   private _vorpal: Vorpal;
-  private _idleTimer: number;
+  private _idleTimer: Timer;
 
   constructor(private _editorConfig: EditorConfig,
               private _commands: Command[],
@@ -27,7 +28,7 @@ export class Shell {
     const shellSession = { session, passwordSafe };
 
     const vorpal = (this._vorpal = new Vorpal()
-      .delimiter(`${path.basename(filepath)}$`)
+      .delimiter(`${basename(filepath)}$`)
       .on('keypress', event => this._onKeyPress(event)));
 
     this._initializeSaveTrigger(vorpal, session, this._editorConfig.saveOn);

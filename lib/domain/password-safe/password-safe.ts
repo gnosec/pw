@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { ChangeEvent } from '../events';
 import { notNullOrEmptyString } from '../validation/assertions';
 

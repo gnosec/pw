@@ -13,7 +13,7 @@
   },
   "scripts": {
     "clean": "rimraf bin",
-    "build": "npm run test && npm run clean && tsc lib/pw.ts --outDir dist && pkg dist/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
+    "build": "npm run test && npm run clean && tsc lib/pw.ts --outDir dist --target ES5 && pkg dist/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
     "test": "jest --preset=ts-jest",
     "cover": "jest --preset=ts-jest --coverage --collectCoverageFrom=lib/**/*.{ts}",
     "format-code": "prettier --write --single-quote"

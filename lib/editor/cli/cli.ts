@@ -1,6 +1,7 @@
-import commander from 'commander';
+const commander = require('commander');
 import { ApplicationInfo } from '../../application.info';
 import { Shell } from '../shell/shell';
+import { OpenOrCreateCommand } from './command/open-or-create.command';
 
 export class Cli {
   constructor({ name, version }: ApplicationInfo,
