@@ -1,11 +1,13 @@
-const LineEnding = require('os').EOL;
+import { Command, CommandDefinition } from './command';
+import { Logger } from '../../support/logger';
+import { EOL as LineEnding } from 'os';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
-class ListCommand {
-  constructor(logger) {
-    this._logger = logger;
+export class ListCommand implements Command {
+  constructor(private _logger: Logger) {
   }
 
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'ls [search]',
       aliases: ['list', 'dir'],
@@ -14,7 +16,7 @@ class ListCommand {
     };
   }
 
-  execute(passwordSafe, search) {
+  execute(passwordSafe: PasswordSafe, search?: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       this._logger.log(
         passwordSafe.keys
@@ -26,9 +28,7 @@ class ListCommand {
           .sort((a, b) => a.localeCompare(b))
           .join(LineEnding)
       );
-      resolve();
+      resolve(passwordSafe);
     });
   }
 }
-
-module.exports = ListCommand;

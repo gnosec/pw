@@ -1,12 +1,13 @@
-const treeify = require('treeify');
+import treeify from 'treeify';
+import { Command, CommandDefinition } from './command';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
-class TreeCommand {
-  constructor(logger, keyDelimiter) {
-    this._logger = logger;
-    this._keyDelimiter = keyDelimiter;
+export class TreeCommand implements Command {
+  constructor(private _logger,
+              private _keyDelimiter: string) {
   }
 
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'tree [search]',
       description:
@@ -14,7 +15,7 @@ class TreeCommand {
     };
   }
 
-  execute(passwordSafe, search) {
+  execute(passwordSafe: PasswordSafe, search?: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       this._logger.log(
         treeify.asTree(
@@ -27,11 +28,11 @@ class TreeCommand {
           )
         )
       );
-      resolve();
+      resolve(passwordSafe);
     });
   }
 
-  _createTree(keys) {
+  _createTree(keys: string[]): any {
     const tree = {};
     keys.forEach(key => {
       let node = tree;
@@ -43,5 +44,3 @@ class TreeCommand {
     return tree;
   }
 }
-
-module.exports = TreeCommand;

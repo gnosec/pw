@@ -1,15 +1,15 @@
-const LineEnding = require('os').EOL;
+import { EOL as LineEnding } from 'os';
+import { Command, CommandDefinition } from './command';
+import { ValidationService } from '../../support/validation.service';
+import { PromptService } from '../../support/prompt.service';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
-class SetCommand {
-  constructor(validationService, promptService) {
-    this._validationService = validationService;
-    this._promptService = promptService;
+export class SetCommand implements Command {
+  constructor(private _validationService: ValidationService,
+              private _promptService: PromptService) {
   }
 
-  /**
-   * Metadata about the command
-   */
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'set <key> [value]',
       description:
@@ -17,7 +17,7 @@ class SetCommand {
     };
   }
 
-  validate({ passwordSafe, key, value }) {
+  validate({ passwordSafe, key, value }: any): string[] {
     const keyErrors = this._validationService.validateKey(key);
     if (keyErrors.length) {
       return keyErrors;
@@ -44,7 +44,7 @@ class SetCommand {
     return [];
   }
 
-  execute(passwordSafe, key, value) {
+  execute(passwordSafe: PasswordSafe, key: string, value: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       if (value != null) {
         passwordSafe.set(key, value);
@@ -70,5 +70,3 @@ class SetCommand {
     });
   }
 }
-
-module.exports = SetCommand;

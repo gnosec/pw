@@ -1,10 +1,11 @@
-const TreeCommand = require('./tree.command');
-const LoggerService = require('../../support/logger');
-const PasswordSafe = require('../../../domain/password-safe/password-safe');
+import { TreeCommand } from './tree.command';
+import { Logger } from '../../support/logger';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { Color } from '../../support/color';
 
 describe('TreeCommand', () => {
-  const loggerService = new LoggerService();
-  const command = new TreeCommand(loggerService);
+  const logger = new Logger(new Color({}));
+  const command = new TreeCommand(logger, '.');
 
   describe('definition', () => {
     it('should return a definition', () => {
@@ -14,13 +15,13 @@ describe('TreeCommand', () => {
 
   describe('autocomplete()', () => {
     it('should not autocomplete', () => {
-      expect(command.autocomplete).toBeUndefined();
+      expect(command['autocomplete']).toBeUndefined();
     });
   });
 
   describe('validate()', () => {
     it('should not validate', () => {
-      expect(command.validate).toBeUndefined();
+      expect(command['validate']).toBeUndefined();
     });
   });
 
@@ -28,10 +29,10 @@ describe('TreeCommand', () => {
     it('should log all keys in order in a tree format', done => {
       const data = { a: 'a', 'a.a': 'a.a', b: 'c', A: 'A' };
 
-      loggerService.log = jest.fn();
+      logger.log = jest.fn();
 
       command.execute(new PasswordSafe(data)).then(() => {
-        expect(loggerService.log).toHaveBeenCalled();
+        expect(logger.log).toHaveBeenCalled();
         done();
       });
     });
@@ -40,10 +41,10 @@ describe('TreeCommand', () => {
       const data = { a: 'a', b: 'b', c: 'c', A: 'A' },
         search = 'a';
 
-      loggerService.log = jest.fn();
+      logger.log = jest.fn();
 
       command.execute(new PasswordSafe(data), search).then(() => {
-        expect(loggerService.log).toHaveBeenCalled();
+        expect(logger.log).toHaveBeenCalled();
         done();
       });
     });

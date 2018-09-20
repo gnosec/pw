@@ -1,7 +1,7 @@
-const SetCommand = require('./set.command');
-const ValidationService = require('../../support/validation.service');
-const PromptService = require('../../support/prompt.service');
-const PasswordSafe = require('../../../domain/password-safe/password-safe');
+import { SetCommand } from './set.command';
+import { ValidationService } from '../../support/validation.service';
+import { PromptService } from '../../support/prompt.service';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
 describe('SetCommand', () => {
   const validationService = new ValidationService();
@@ -22,7 +22,7 @@ describe('SetCommand', () => {
 
   describe('autocomplete()', () => {
     it('should not have autocomplete', () => {
-      expect(command.autocomplete).toBeUndefined();
+      expect(command['autocomplete']).toBeUndefined();
     });
   });
 
@@ -106,11 +106,9 @@ describe('SetCommand', () => {
         key = 'key',
         value = 'value';
 
-      promptService.prompt = jasmine
-        .createSpy()
-        .and.returnValue(Promise.resolve({ value: value }));
+      promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
 
-      command.execute(new PasswordSafe(data), key).then(() => {
+      command.execute(new PasswordSafe(data), key, undefined).then(() => {
         expect(data[key]).toBe(value);
         done();
       });
@@ -122,11 +120,9 @@ describe('SetCommand', () => {
         value = 'value',
         invalidKey = '';
 
-      promptService.prompt = jasmine
-        .createSpy()
-        .and.returnValue(Promise.resolve({ value: value }));
+      promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
 
-      command.execute(new PasswordSafe(data), key).then(() => {
+      command.execute(new PasswordSafe(data), key, undefined).then(() => {
         const validate = promptService.prompt.calls.mostRecent().args[0]
           .validate;
         expect(validate(key)).toBe(true);

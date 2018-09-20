@@ -1,11 +1,14 @@
-const LineEnding = require('os').EOL;
+import { ValidationService } from '../../support/validation.service';
+import { Command, CommandDefinition } from './command';
+import { Session } from '../../session';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { EOL as LineEnding } from 'os';
 
-class MoveCommand {
-  constructor(validationService) {
-    this._validationService = validationService;
+export class MoveCommand implements Command {
+  constructor(private _validationService: ValidationService) {
   }
 
-  get definition() {
+  get definition(): CommandDefinition {
     return {
       usage: 'mv <key> <newKey>',
       aliases: ['move'],
@@ -13,11 +16,11 @@ class MoveCommand {
     };
   }
 
-  autocomplete({ passwordSafe }) {
+  autocomplete({ passwordSafe }: Session): string[] {
     return passwordSafe.keys;
   }
 
-  validate({ passwordSafe, key, newKey, options }) {
+  validate({ passwordSafe, key, newKey, options }: any): string[] {
     const matches = this._validationService.getMatches(passwordSafe.data, key);
     if (!matches.length) {
       return [`"${key}" is not a key`];
@@ -40,7 +43,7 @@ class MoveCommand {
     return [];
   }
 
-  execute(passwordSafe, key, newKey) {
+  execute(passwordSafe: PasswordSafe, key: string, newKey: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       this._validationService
         .getMatches(passwordSafe.data, key)
@@ -56,5 +59,3 @@ class MoveCommand {
     });
   }
 }
-
-module.exports = MoveCommand;
