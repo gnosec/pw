@@ -1,19 +1,23 @@
 import { EditorConfig } from '../../application.config';
-
-const Vorpal = require('vorpal');
-const path = require('path');
-const getParameterNames = require('get-parameter-names');
-const LineEnding = require('os').EOL;
+import { Command } from './command/command';
+import { PasswordSafeService } from '../../domain/password-safe/password-safe.service';
+import { Color } from '../support/color';
+import { Logger } from '../support/logger';
+import Vorpal from 'vorpal';
+import path from 'path';
+import getParameterNames from 'get-parameter-names';
+import { EOL as LineEnding } from 'os';
 
 export class Shell {
-  constructor(private editorConfig: EditorConfig,
-              private commands: Command[],
-              passwordSafeService, color, logger) {
-    this._editorConfig = editorConfig;
-    this._commands = commands;
-    this._passwordSafeService = passwordSafeService;
-    this._color = color;
-    this._logger = logger;
+
+  private _vorpal: Vorpal;
+  private _idleTimer: number;
+
+  constructor(private _editorConfig: EditorConfig,
+              private _commands: Command[],
+              private _passwordSafeService: PasswordSafeService,
+              private _color: Color,
+              private _logger: Logger) {
   }
 
   open(session) {
@@ -129,31 +133,30 @@ export class Shell {
    *
    * @param {object} args
    */
-  _normalizeArguments(args) {
-    return Object.entries(args).reduce((normalized, [key, value]) => {
-      normalized[key] = ['boolean', 'number'].includes(typeof value)
+  _normalizeArguments(args: any): any {
+    return Object.keys(args).reduce((normalized, key) => {
+      const value = args[key];
+      normalized[key] = ['boolean', 'number'].indexOf(typeof value) !== -1
         ? String(value)
         : value;
       return normalized;
     }, {});
   }
 
-  _onKeyPress(event) {
+  private _onKeyPress(event: any): void {
     this._resetIdleTimer();
   }
 
-  _startIdleTimer() {
+  private _startIdleTimer(): void {
     this._idleTimer = setTimeout(() => {
       this._vorpal.exec('exit');
     }, this._editorConfig.idleTimeout);
   }
 
-  _resetIdleTimer() {
+  private _resetIdleTimer(): void {
     if (this._idleTimer != null) {
       clearTimeout(this._idleTimer);
     }
     this._startIdleTimer();
   }
 }
-
-module.exports = Shell;

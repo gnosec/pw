@@ -32,7 +32,7 @@ export class TreeCommand implements Command {
     });
   }
 
-  _createTree(keys: string[]): any {
+  private _createTree(keys: string[]): any {
     const tree = {};
     keys.forEach(key => {
       let node = tree;

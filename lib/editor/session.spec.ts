@@ -46,7 +46,7 @@ describe('Session', () => {
     it('should validate input', () => {
       const session = createValidSession();
       InvalidFilepathsAndPasswords.forEach(invalidInput => {
-        expect(() => (session.password = invalidInput)).toThrowError();
+        expect(() => (session.password = <any>invalidInput)).toThrowError();
       });
     });
 

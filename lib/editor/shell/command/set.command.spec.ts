@@ -2,9 +2,10 @@ import { SetCommand } from './set.command';
 import { ValidationService } from '../../support/validation.service';
 import { PromptService } from '../../support/prompt.service';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { applicationConfig } from '../../../application.config';
 
 describe('SetCommand', () => {
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const promptService = new PromptService();
   const command = new SetCommand(validationService, promptService);
 
@@ -108,7 +109,7 @@ describe('SetCommand', () => {
 
       promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
 
-      command.execute(new PasswordSafe(data), key, undefined).then(() => {
+      command.execute(new PasswordSafe(data), key).then(() => {
         expect(data[key]).toBe(value);
         done();
       });
@@ -120,11 +121,10 @@ describe('SetCommand', () => {
         value = 'value',
         invalidKey = '';
 
-      promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
+      const mockFn = promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
 
-      command.execute(new PasswordSafe(data), key, undefined).then(() => {
-        const validate = promptService.prompt.calls.mostRecent().args[0]
-          .validate;
+      command.execute(new PasswordSafe(data), key).then(() => {
+        const validate = mockFn.mock.calls[0][0].validate;
         expect(validate(key)).toBe(true);
         expect(validate(invalidKey).length).toBeGreaterThan(0);
         done();

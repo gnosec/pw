@@ -1,15 +1,15 @@
-import { applicationConfig, ApplicationConfig } from '../../application.config';
-
-const {
+import { ApplicationConfig } from '../../application.config';
+import { PasswordOptions } from '../../domain/password/password.service';
+import {
   CharacterSetNames,
   CharacterSetsByName
-} = require('../../domain/password/character-sets');
+} from '../../domain/password/character-sets';
 
 /**
  * Responsible for user input validation
  */
 export class ValidationService {
-  constructor(private applicationConfig: ApplicationConfig = applicationConfig) {
+  constructor(private applicationConfig: ApplicationConfig) {
   }
 
   /**
@@ -237,18 +237,18 @@ export class ValidationService {
     return errors;
   }
 
-  _checkKey(key: string): void {
+  private _checkKey(key: string): void {
     const errors = this.validateKey(key);
     if (errors.length) {
       throw new Error(errors[0]);
     }
   }
 
-  _split(path: string): string[] {
+  private _split(path: string): string[] {
     return path.split(this.applicationConfig.key.delimiter);
   }
 
-  _getPermutations(path: string, includeKey: boolean = true): string[] {
+  private _getPermutations(path: string, includeKey: boolean = true): string[] {
     const offset = includeKey ? 0 : -1;
     const permutations = [];
     const parts = this._split(path);
@@ -262,7 +262,7 @@ export class ValidationService {
     return permutations;
   }
 
-  _getPermutationsByKey(object: any, includeKey: boolean = true): any {
+  private _getPermutationsByKey(object: any, includeKey: boolean = true): any {
     const offset = includeKey ? 0 : -1;
     const permutationsByKey = {};
     Object.keys(object).forEach(key => {
@@ -280,13 +280,11 @@ export class ValidationService {
     return permutationsByKey;
   }
 
-  _getAncestorPermutations(path: string): string[] {
+  private _getAncestorPermutations(path: string): string[] {
     return this._getPermutations(path, false);
   }
 
-  _getAncestorPermutationsByKey(object: string): any {
+  private _getAncestorPermutationsByKey(object: string): any {
     return this._getPermutationsByKey(object, false);
   }
 }
-
-module.exports = ValidationService;

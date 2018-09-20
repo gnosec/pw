@@ -19,12 +19,16 @@ export class PasswordService {
 
   createPassword(options: PasswordOptions = {}): string {
     const { length, characters } = this._createSettings(options);
-    return [...crypto.randomBytes(length)]
+    const array = [];
+    for (let value in crypto.randomBytes(length)) {
+      array.push(value);
+    }
+    return array
       .map(byte => characters[byte % characters.length])
       .join('');
   }
 
-  _createSettings(options: PasswordOptions): PasswordSettings {
+  private _createSettings(options: PasswordOptions): PasswordSettings {
     const { length, charset, spaces } = options;
     const {
       minimumLength,

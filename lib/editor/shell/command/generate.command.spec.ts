@@ -3,8 +3,7 @@ import { ClipboardService } from '../../support/clipboard.service';
 import { ValidationService } from '../../support/validation.service';
 import { PasswordService } from '../../../domain/password/password.service';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
-import { PasswordConfig } from '../../../application.config';
-import { Session } from '../../session';
+import { applicationConfig, PasswordConfig } from '../../../application.config';
 
 describe('GenerateCommand', () => {
   const passwordConfig: PasswordConfig = {
@@ -14,7 +13,7 @@ describe('GenerateCommand', () => {
     defaultCharset: 'numeric'
   };
   const passwordService = new PasswordService(passwordConfig);
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const clipboardService = new ClipboardService();
   const command = new GenerateCommand(
     validationService,
@@ -43,7 +42,7 @@ describe('GenerateCommand', () => {
 
   describe('validate()', () => {
     const Errors = ['error1', 'error2'];
-    const NoKey: Session = <Session>{
+    const NoKey = <any>{
       passwordSafe: {
         data: {}
       },

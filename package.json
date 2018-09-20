@@ -14,8 +14,8 @@
   "scripts": {
     "clean": "rimraf bin",
     "build": "npm run test && npm run clean && tsc lib/pw.ts --outDir dist && pkg dist/pw.js --targets node8-linux-x64,node8-macos-x64,node8-win-x64 --out-path bin",
-    "test": "jest",
-    "cover": "jest --coverage --collectCoverageFrom=lib/**/*.{js}",
+    "test": "jest --preset=ts-jest",
+    "cover": "jest --preset=ts-jest --coverage --collectCoverageFrom=lib/**/*.{ts}",
     "format-code": "prettier --write --single-quote"
   },
   "bin": {
@@ -36,6 +36,7 @@
     "vorpal": "^1.12.0"
   },
   "devDependencies": {
+    "@types/es6-shim": "^0.31.37",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "coveralls": "^3.0.2",
@@ -46,6 +47,7 @@
     "pkg": "^4.3.4",
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.0",
     "typescript": "^3.0.3"
   },
   "husky": {

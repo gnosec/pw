@@ -44,7 +44,7 @@ export class SetCommand implements Command {
     return [];
   }
 
-  execute(passwordSafe: PasswordSafe, key: string, value: string): Promise<PasswordSafe> {
+  execute(passwordSafe: PasswordSafe, key: string, value?: string): Promise<PasswordSafe> {
     return new Promise((resolve, reject) => {
       if (value != null) {
         passwordSafe.set(key, value);

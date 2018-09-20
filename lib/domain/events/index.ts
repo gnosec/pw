@@ -1,3 +1,1 @@
-import { ChangeEvent } from './change.event';
-
-export const ChangeEvent = ChangeEvent;
+export { ChangeEvent } from './change.event';

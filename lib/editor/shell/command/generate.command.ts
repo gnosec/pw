@@ -50,7 +50,7 @@ export class GenerateCommand implements Command {
     };
   }
 
-  validate({ passwordSafe, key, options }: Session): string[] {
+  validate({ passwordSafe, key, options }: any): string[] {
     if (key != null) {
       const keyErrors = this._validationService.validateKey(key);
       if (keyErrors.length) {
