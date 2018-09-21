@@ -54,7 +54,7 @@ describe('GetCommand', () => {
 
   describe('execute()', () => {
     it('should copy value to clipboard', done => {
-      const data = { key: 'value' },
+      const data = { key: [{ value: 'value' }] },
         key = 'key',
         value = 'value';
 

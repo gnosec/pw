@@ -47,9 +47,7 @@ describe('SetCommand', () => {
     });
 
     it('should return key errors', () => {
-      validationService.validateKey = jasmine
-        .createSpy()
-        .and.returnValue(Errors);
+      validationService.validateKey = jest.fn(() => Errors);
       expect(command.validate(KeyOnly)).toBe(Errors);
     });
 
@@ -60,9 +58,7 @@ describe('SetCommand', () => {
     });
 
     it('should return value errors', () => {
-      validationService.validateValue = jasmine
-        .createSpy()
-        .and.returnValue(Errors);
+      validationService.validateValue = jest.fn(() => Errors);
       expect(command.validate(KeyAndValue)).toBe(Errors);
     });
 
@@ -82,9 +78,7 @@ describe('SetCommand', () => {
     });
 
     it('should return conflicts', () => {
-      validationService.getConflicts = jasmine
-        .createSpy()
-        .and.returnValue(Conflicts);
+      validationService.getConflicts = jest.fn(() => Conflicts);
       const errors = command.validate(KeyOnly);
       expect(errors.length).toBe(1);
     });
@@ -96,8 +90,9 @@ describe('SetCommand', () => {
         key = 'key',
         value = 'value';
 
-      command.execute(new PasswordSafe(data), key, value).then(() => {
-        expect(data[key]).toBe(value);
+      const passwordSafe = new PasswordSafe(data);
+      command.execute(passwordSafe, key, value).then(() => {
+        expect(passwordSafe.get(key)).toBe(value);
         done();
       });
     });
@@ -109,8 +104,9 @@ describe('SetCommand', () => {
 
       promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
 
-      command.execute(new PasswordSafe(data), key).then(() => {
-        expect(data[key]).toBe(value);
+      const passwordSafe = new PasswordSafe(data);
+      command.execute(passwordSafe, key).then(() => {
+        expect(passwordSafe.get(key)).toBe(value);
         done();
       });
     });

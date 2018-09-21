@@ -56,10 +56,17 @@ export class PasswordSafeService {
 
   _migrate({ version, data }: PasswordSafe): PasswordSafe {
     if (semver.lt(version, '2.0.0')) {
+      // convert [{key, value}] into {key: value} for more logical structuring
       data = (<Array<any>>data).reduce((dataV2, entryV1) => {
         dataV2[entryV1.key] = entryV1.value;
         return dataV2;
       }, {});
+    }
+    if (semver.lt(version, '3.0.0')) {
+      // convert {key: value} to {key: [{ value }]} to support value history
+      for (const key in data) {
+        data[key] = [ { value: data[key] } ];
+      }
     }
     // Version adapters should be added here sequentially
     return new PasswordSafe(data);

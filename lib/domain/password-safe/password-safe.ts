@@ -2,11 +2,16 @@ import { EventEmitter } from 'events';
 import { ChangeEvent } from '../events';
 import { notNullOrEmptyString } from '../validation/assertions';
 
-const SchemaVersion = '2.0.0';
+const SchemaVersion = '3.0.0';
 const _checkKey = input =>
   notNullOrEmptyString(input, 'key must not be null or empty');
 const _checkValue = input =>
   notNullOrEmptyString(input, 'value must not be null or empty');
+
+interface ValueEntry {
+  readonly value: string;
+  readonly datetime: Date;
+}
 
 export class PasswordSafe {
 
@@ -41,13 +46,26 @@ export class PasswordSafe {
   }
 
   get(key: string): string {
-    return this._data[_checkKey(key)];
+    const values = this._data[ _checkKey(key)];
+    return values ? values[0].value : undefined;
+  }
+
+  getValues(key: string): ValueEntry[] {
+    return this._data[_checkKey(key)] || [];
   }
 
   set(key: string, value: string): void {
-    const previousValue = this._data[_checkKey(key)];
+    const previousValue = _checkKey(key) in this._data
+      ? this._data[key][0].value
+      : undefined;
     if (previousValue !== _checkValue(value)) {
-      this._data[key] = value;
+      const entry = {
+        value,
+        datetime: new Date()
+      };
+      this._data[key] = this._data[key]
+        ? [ entry, ...this._data[key] ]
+        : [ entry ];
       this._events.emit('change', new ChangeEvent(previousValue, value));
     }
   }

@@ -2,9 +2,18 @@ import { CopyCommand } from './copy.command';
 import { ValidationService } from '../../support/validation.service';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { Session } from '../../session';
+import { applicationConfig } from '../../../application.config';
+
+const pruneDateTimes = data => {
+  const transformed = { ...data };
+  for (const key in transformed) {
+    transformed[key] = data[key].map(({ value }) => <any>{ value });
+  }
+  return transformed;
+};
 
 describe('CopyCommand', () => {
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const command = new CopyCommand(validationService);
 
   beforeEach(() => {
@@ -21,13 +30,13 @@ describe('CopyCommand', () => {
 
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
-      const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
+      const passwordSafe = new PasswordSafe({ a: [{ value: 'a' }], b: [{ value: 'b' }] });
       expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
 
   describe('validate()', () => {
-    const passwordSafe = new PasswordSafe({ key: 'value' }),
+    const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
       key = 'key',
       newKey = 'newKey',
       Errors = ['error', 'anotherError'];
@@ -75,16 +84,16 @@ describe('CopyCommand', () => {
 
   describe('execute()', () => {
     it('should copy a key value to a new key', done => {
-      const passwordSafe = new PasswordSafe({ key: 'value' }),
+      const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
         key = 'key',
         newKey = 'newKey';
 
       validationService.getMatches = jest.fn(() => ['key']);
 
       command.execute(passwordSafe, key, newKey).then(() => {
-        expect(passwordSafe.data).toEqual({
-          key: 'value',
-          newKey: 'value'
+        expect(pruneDateTimes(passwordSafe.data)).toEqual({
+          key: [{ value: 'value' }],
+          newKey: [{ value: 'value' }]
         });
         done();
       });
@@ -92,9 +101,9 @@ describe('CopyCommand', () => {
 
     it('should copy all <key> to <newKey> when the key matches a subpath of existing key(s)', done => {
       const passwordSafe = new PasswordSafe({
-          'a.a': 'aa',
-          'a.b': 'ab',
-          'a.c': 'ac'
+          'a.a': [{ value: 'aa' }],
+          'a.b': [{ value: 'ab' }],
+          'a.c': [{ value: 'ac' }]
         }),
         key = 'a',
         newKey = 'b';
@@ -102,13 +111,13 @@ describe('CopyCommand', () => {
       validationService.getMatches = jest.fn(() => ['a.a', 'a.b', 'a.c']);
 
       command.execute(passwordSafe, key, newKey).then(() => {
-        expect(passwordSafe.data).toEqual({
-          'a.a': 'aa',
-          'a.b': 'ab',
-          'a.c': 'ac',
-          'b.a': 'aa',
-          'b.b': 'ab',
-          'b.c': 'ac'
+        expect(pruneDateTimes(passwordSafe.data)).toEqual({
+          'a.a': [{ value: 'aa' }],
+          'a.b': [{ value: 'ab' }],
+          'a.c': [{ value: 'ac' }],
+          'b.a': [{ value: 'aa' }],
+          'b.b': [{ value: 'ab' }],
+          'b.c': [{ value: 'ac' }]
         });
         done();
       });

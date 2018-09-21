@@ -56,7 +56,7 @@ describe('EchoCommand', () => {
 
   describe('execute()', () => {
     it('should log value of key', done => {
-      const data = { key: 'value' },
+      const data = { key: [{ value: 'value' }] },
         key = 'key',
         value = 'value';
 

@@ -39,15 +39,15 @@ describe('PasswordSafe', () => {
       const passwordSafe = new PasswordSafe(data);
 
       passwordSafe.set('key', 'value');
-      expect(data.key).toBe('value');
+      expect(passwordSafe.get('key')).toBe('value');
     });
 
     it('should overwrite existing values if keys match', () => {
-      const data = { key: '1' };
+      const data = { key: [{ value: '1'}] };
       const passwordSafe = new PasswordSafe(data);
 
       passwordSafe.set('key', '2');
-      expect(data.key).toBe('2');
+      expect(passwordSafe.get('key')).toBe('2');
     });
 
     it('should trigger change event when value changes', () => {
@@ -59,7 +59,7 @@ describe('PasswordSafe', () => {
     });
 
     it('should trigger change when existing value is overwritten', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
@@ -68,7 +68,7 @@ describe('PasswordSafe', () => {
     });
 
     it('should not trigger change event when value does not change', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
@@ -85,7 +85,7 @@ describe('PasswordSafe', () => {
     });
 
     it('should return true if the key is present', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
 
       expect(passwordSafe.has('key')).toBe(true);
@@ -107,10 +107,10 @@ describe('PasswordSafe', () => {
     });
 
     it('should get the value of the input key', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
 
-      expect(passwordSafe.get('key')).toBe(data.key);
+      expect(passwordSafe.get('key')).toBe(data.key[0].value);
     });
 
     it('should return undefined when it does not match', () => {
@@ -134,14 +134,14 @@ describe('PasswordSafe', () => {
     });
 
     it('should delete the specified value', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
       passwordSafe.delete('key');
       expect(data.key).toBeUndefined();
     });
 
     it('should trigger change event when value changes', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
@@ -150,7 +150,7 @@ describe('PasswordSafe', () => {
     });
 
     it('should not trigger change event when value does not change', () => {
-      const data = { key: 'value' };
+      const data = { key: [{ value: 'value'}] };
       const passwordSafe = new PasswordSafe(data);
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);

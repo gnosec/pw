@@ -2,15 +2,22 @@ import { MoveCommand } from './move.command';
 import {  ValidationService } from '../../support/validation.service';
 import {  PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { Session } from '../../session';
+import { applicationConfig } from '../../../application.config';
+
+const pruneDateTimes = data => {
+  const transformed = { ...data };
+  for (const key in transformed) {
+    transformed[key] = data[key].map(({ value }) => <any>{ value });
+  }
+  return transformed;
+};
 
 describe('MoveCommand', () => {
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const command = new MoveCommand(validationService);
 
   beforeEach(() => {
-    validationService.getMatches = jasmine
-      .createSpy()
-      .and.returnValue(['match']);
+    validationService.getMatches = jest.fn(() => ['match']);
     validationService.validateKey = jest.fn(() => []);
     validationService.getConflicts = jest.fn(() => []);
   });
@@ -23,13 +30,13 @@ describe('MoveCommand', () => {
 
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
-      const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
+      const passwordSafe = new PasswordSafe({ a: [{ value: 'a' }], b: [{ value: 'b' }] });
       expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
 
   describe('validate()', () => {
-    const passwordSafe = new PasswordSafe({ key: 'value' }),
+    const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
       key = 'key',
       newKey = 'newKey',
       Errors = ['error', 'anotherError'];
@@ -56,9 +63,7 @@ describe('MoveCommand', () => {
     });
 
     it('should return new key errors', () => {
-      validationService.validateKey = jasmine
-        .createSpy()
-        .and.returnValue(Errors);
+      validationService.validateKey = jest.fn(() => Errors);
       expect(command.validate(Args)).toBe(Errors);
     });
 
@@ -72,26 +77,22 @@ describe('MoveCommand', () => {
     });
 
     it('should return conflicts', () => {
-      validationService.getConflicts = jasmine
-        .createSpy()
-        .and.returnValue(['conflict']);
+      validationService.getConflicts = jest.fn(() => ['conflict']);
       expect(command.validate(Args).length).toBeGreaterThan(0);
     });
   });
 
   describe('execute()', () => {
     it('should copy a key value to a new key', done => {
-      const passwordSafe = new PasswordSafe({ key: 'value' }),
+      const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
         key = 'key',
         newKey = 'newKey';
 
-      validationService.getMatches = jasmine
-        .createSpy()
-        .and.returnValue(['key']);
+      validationService.getMatches = jest.fn(() => ['key']);
 
       command.execute(passwordSafe, key, newKey).then(() => {
-        expect(passwordSafe.data).toEqual({
-          newKey: 'value'
+        expect(pruneDateTimes(passwordSafe.data)).toEqual({
+          newKey: [{ value: 'value' }]
         });
         done();
       });
@@ -99,22 +100,20 @@ describe('MoveCommand', () => {
 
     it('should copy all <key>/* to <newKey>/* when the key matches a subpath of existing key(s)', done => {
       const passwordSafe = new PasswordSafe({
-          'a.a': 'aa',
-          'a.b': 'ab',
-          'a.c': 'ac'
+          'a.a': [{ value: 'aa' }],
+          'a.b': [{ value: 'ab' }],
+          'a.c': [{ value: 'ac' }]
         }),
         key = 'a',
         newKey = 'b';
 
-      validationService.getMatches = jasmine
-        .createSpy()
-        .and.returnValue(['a.a', 'a.b', 'a.c']);
+      validationService.getMatches = jest.fn(() => ['a.a', 'a.b', 'a.c']);
 
       command.execute(passwordSafe, key, newKey).then(() => {
-        expect(passwordSafe.data).toEqual({
-          'b.a': 'aa',
-          'b.b': 'ab',
-          'b.c': 'ac'
+        expect(pruneDateTimes(passwordSafe.data)).toEqual({
+          'b.a': [{ value: 'aa' }],
+          'b.b': [{ value: 'ab' }],
+          'b.c': [{ value: 'ac' }]
         });
         done();
       });

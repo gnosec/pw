@@ -63,9 +63,7 @@ describe('GenerateCommand', () => {
     });
 
     it('should return key errors', () => {
-      validationService.validateKey = jasmine
-        .createSpy()
-        .and.returnValue(Errors);
+      validationService.validateKey = jest.fn(() => Errors);
       expect(command.validate(DefaultArgs)).toBe(Errors);
     });
 
@@ -106,12 +104,11 @@ describe('GenerateCommand', () => {
         value = 'value',
         options = {};
 
-      passwordService.createPassword = jasmine
-        .createSpy()
-        .and.returnValue(value);
+      passwordService.createPassword = jest.fn(() => value);
 
-      command.execute(new PasswordSafe(data), key, options).then(() => {
-        expect(data[key]).toBe(value);
+      const passwordSafe = new PasswordSafe(data);
+      command.execute(passwordSafe, key, options).then(() => {
+        expect(passwordSafe.get(key)).toBe(value);
         done();
       });
     });
@@ -124,8 +121,9 @@ describe('GenerateCommand', () => {
 
       passwordService.createPassword = jest.fn(() => value);
 
-      command.execute(new PasswordSafe(data), key, options).then(() => {
-        expect(data[key]).toBeUndefined();
+      const passwordSafe = new PasswordSafe(data);
+      command.execute(passwordSafe, key, options).then(() => {
+        expect(passwordSafe.data[key]).toBeUndefined();
         done();
       });
     });
@@ -136,9 +134,7 @@ describe('GenerateCommand', () => {
         value = 'value',
         options = {};
 
-      passwordService.createPassword = jasmine
-        .createSpy()
-        .and.returnValue(value);
+      passwordService.createPassword = jest.fn(() => value);
       clipboardService.copy = jest.fn();
 
       command.execute(new PasswordSafe(data), key, options).then(() => {

@@ -4,6 +4,11 @@ import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { EOL as LineEnding } from 'os';
 import { Color } from '../../support/color';
 
+const createData = (...values) => values.reduce((object, value) => {
+  object[value] = [ {value } ];
+  return object;
+}, {});
+
 describe('ListCommand', () => {
   const logger = new Logger(new Color({}));
   const command = new ListCommand(logger);
@@ -28,7 +33,7 @@ describe('ListCommand', () => {
 
   describe('execute()', () => {
     it('should log all keys in order', () => {
-      const data = {a: 'a', b: 'b', c: 'c', A: 'A'};
+      const data = createData('a', 'b', 'c', 'A');
 
       logger.log = jest.fn();
 
@@ -42,7 +47,7 @@ describe('ListCommand', () => {
     });
 
     it('should filter on search param case insensitively', () => {
-      const data = {a: 'a', b: 'b', c: 'c', A: 'A'},
+      const data = createData('a', 'b', 'c', 'A'),
         search = 'a';
 
       logger.log = jest.fn();
