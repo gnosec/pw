@@ -7,7 +7,6 @@ import { PasswordOptions, PasswordService } from '../../../domain/password/passw
 import { PasswordConfig } from '../../../application.config';
 import { ClipboardService } from '../../support/clipboard.service';
 import { Command, CommandDefinition } from './command';
-import { Session } from '../../session';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 
 export class GenerateCommand implements Command {

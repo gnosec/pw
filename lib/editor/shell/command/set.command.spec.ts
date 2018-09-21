@@ -97,12 +97,12 @@ describe('SetCommand', () => {
       });
     });
 
-    it('should prompt for a value when a value is not provied', done => {
+    it('should prompt for a value when a value is not provided', done => {
       const data = {},
         key = 'key',
         value = 'value';
 
-      promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
+      promptService.prompt = jest.fn(() => Promise.resolve({ value }));
 
       const passwordSafe = new PasswordSafe(data);
       command.execute(passwordSafe, key).then(() => {
@@ -117,7 +117,7 @@ describe('SetCommand', () => {
         value = 'value',
         invalidKey = '';
 
-      const mockFn = promptService.prompt = jest.fn(() => Promise.resolve({ value: value }));
+      const mockFn = promptService.prompt = jest.fn(() => Promise.resolve({ value }));
 
       command.execute(new PasswordSafe(data), key).then(() => {
         const validate = mockFn.mock.calls[0][0].validate;

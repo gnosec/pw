@@ -4,10 +4,10 @@ import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { EOL as LineEnding } from 'os';
 import { Color } from '../../support/color';
 
-const createData = (...values) => values.reduce((object, value) => {
-  object[value] = [ {value } ];
-  return object;
-}, {});
+const createPasswordSafe = (...values) => values.reduce((passwordSafe, value) => {
+  passwordSafe.set(value, value);
+  return passwordSafe;
+}, new PasswordSafe());
 
 describe('ListCommand', () => {
   const logger = new Logger(new Color({}));
@@ -33,13 +33,13 @@ describe('ListCommand', () => {
 
   describe('execute()', () => {
     it('should log all keys in order', () => {
-      const data = createData('a', 'b', 'c', 'A');
+      const passwordSafe = createPasswordSafe('a', 'b', 'c', 'A');
 
       logger.log = jest.fn();
 
-      command.execute(new PasswordSafe(data)).then(() => {
+      command.execute(passwordSafe).then(() => {
         expect(logger.log).toHaveBeenCalledWith(
-          Object.keys(data)
+          Object.keys(passwordSafe.data)
             .sort((a, b) => a.localeCompare(b))
             .join(LineEnding)
         );
@@ -47,12 +47,12 @@ describe('ListCommand', () => {
     });
 
     it('should filter on search param case insensitively', () => {
-      const data = createData('a', 'b', 'c', 'A'),
+      const passwordSafe = createPasswordSafe('a', 'b', 'c', 'A'),
         search = 'a';
 
       logger.log = jest.fn();
 
-      command.execute(new PasswordSafe(data), search).then(() => {
+      command.execute(passwordSafe, search).then(() => {
         expect(logger.log).toHaveBeenCalledWith(
           Object.keys({a: 'a', A: 'A'})
             .sort((a, b) => a.localeCompare(b))
