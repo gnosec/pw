@@ -3,9 +3,9 @@ import { Command } from './command/command';
 import { PasswordSafeService } from '../../domain/password-safe/password-safe.service';
 import { Color } from '../support/color';
 import { Logger } from '../support/logger';
-import Vorpal from 'vorpal';
+import * as Vorpal from 'vorpal';
 import { basename } from 'path';
-import getParameterNames from 'get-parameter-names';
+import * as getParameterNames from 'get-parameter-names';
 import { EOL as LineEnding } from 'os';
 import Timer = NodeJS.Timer;
 
@@ -125,7 +125,7 @@ export class Shell {
       ? error.forEach(errorMessage =>
           this._logger.error(`Error: ${errorMessage}`)
         )
-      : this._logger.error('Internal Error');
+      : this._logger.error('Internal Error', error);
     /* DEBUG : this._logger.error('Internal Error:', error); */
   }
 

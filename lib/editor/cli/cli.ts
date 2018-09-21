@@ -31,7 +31,8 @@ export class Cli {
     Array.isArray(error)
       ? error.forEach(errorMessage => console.error(`Error: ${errorMessage}`))
       : console.error(
-          'Invalid Password'
-        ); /* DEBUG console.error('Internal Error: ', error)*/
+          'Invalid Password', error
+        );
+    /* DEBUG console.error('Internal Error: ', error)*/
   }
 }

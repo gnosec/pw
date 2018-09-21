@@ -1,5 +1,5 @@
 import { FileService } from './file.service';
-import semver from 'semver';
+import * as semver from 'semver';
 import { PasswordSafe } from './password-safe';
 import { Session } from '../../editor/session';
 import { PasswordSafeFileProcessor } from './password-safe-file.processor';

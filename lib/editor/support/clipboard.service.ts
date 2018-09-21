@@ -1,4 +1,4 @@
-import copyPaste from 'copy-paste';
+import * as copyPaste from 'copy-paste';
 
 export class ClipboardService {
   copy(value: string): void {

@@ -1,6 +1,6 @@
 import { PasswordSafe } from './password-safe';
 import { ChangeEvent } from '../events/index';
-import semver from 'semver';
+import * as semver from 'semver';
 
 const InvalidKeys = ['', null, undefined, 999, {}, [], () => {}, /regex/];
 const InvalidValues = InvalidKeys.concat();

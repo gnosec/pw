@@ -1,5 +1,5 @@
 import { exists, readFile, writeFile } from 'fs';
-import mkdirp from 'mkdirp';
+import * as mkdirp from 'mkdirp';
 import { dirname } from 'path';
 
 export type FileOptions = { encoding?: string | null; mode?: number | string; flag?: string; } | string | undefined | null;

@@ -1,4 +1,4 @@
-import treeify from 'treeify';
+import * as treeify from 'treeify';
 import { Command, CommandDefinition } from './command';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 

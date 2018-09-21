@@ -1,6 +1,6 @@
 import { MoveCommand } from './move.command';
-import {  ValidationService } from '../../support/validation.service';
-import {  PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { ValidationService } from '../../support/validation.service';
+import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { Session } from '../../session';
 import { applicationConfig } from '../../../application.config';
 
