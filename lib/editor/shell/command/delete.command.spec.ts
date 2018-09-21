@@ -2,9 +2,10 @@ import { DeleteCommand } from './delete.command';
 import { ValidationService } from '../../support/validation.service';
 import { PasswordSafe } from '../../../domain/password-safe/password-safe';
 import { Session } from '../../session';
+import { applicationConfig } from '../../../application.config';
 
 describe('DeleteCommand', () => {
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const command = new DeleteCommand(validationService);
 
   beforeEach(() => {

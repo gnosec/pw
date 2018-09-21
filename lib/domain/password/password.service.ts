@@ -2,6 +2,14 @@ import { PasswordConfig } from '../../application.config';
 import { randomBytes } from 'crypto';
 import { CharacterSetsByName, Spaces } from './character-sets';
 
+function toArray(buffer: Buffer): any[] {
+  const array = [];
+  for (let i = 0; i < buffer.length; i++) {
+    array.push(buffer[i]);
+  }
+  return array;
+}
+
 export interface PasswordOptions {
   readonly length?: number;
   readonly charset?: string;
@@ -19,11 +27,7 @@ export class PasswordService {
 
   createPassword(options: PasswordOptions = {}): string {
     const { length, characters } = this._createSettings(options);
-    const array = [];
-    for (let value in randomBytes(length)) {
-      array.push(value);
-    }
-    return array
+    return toArray(randomBytes(length))
       .map(byte => characters[byte % characters.length])
       .join('');
   }
@@ -46,4 +50,5 @@ export class PasswordService {
       ].characters.concat(spaces ? Spaces : [])
     };
   }
+
 }

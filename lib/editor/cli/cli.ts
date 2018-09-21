@@ -1,4 +1,4 @@
-const commander = require('commander');
+import * as commander from 'commander';
 import { ApplicationInfo } from '../../application.info';
 import { Shell } from '../shell/shell';
 import { OpenOrCreateCommand } from './command/open-or-create.command';

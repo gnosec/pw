@@ -1,9 +1,10 @@
 import { ChangeMasterPasswordCommand } from './change-master-password.command';
 import { ValidationService } from '../../support/validation.service';
 import { PromptService } from '../../support/prompt.service';
+import { applicationConfig } from '../../../application.config';
 
 describe('ChangeMasterPasswordCommand', () => {
-  const validationService = new ValidationService();
+  const validationService = new ValidationService(applicationConfig);
   const promptService = new PromptService();
   const command = new ChangeMasterPasswordCommand(
     validationService,
