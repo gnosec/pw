@@ -1,19 +1,19 @@
-import { exists, readFile, writeFile } from 'fs';
+import { existsSync, readFile, writeFile } from 'fs';
 import { dirname } from 'path';
 const mkdirp = require('mkdirp');
 
-export type FileOptions = { encoding?: string | null; mode?: number | string; flag?: string; } | string | undefined | null;
+export type FileOptions = {
+  encoding?: string | null;
+  mode?: number | string;
+  flag?: string;
+} | string | undefined | null;
 
 export class FileService {
   constructor(private fileOptions: FileOptions = {}) {
   }
 
   exists(filepath: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      exists(filepath || '', exists => {
-        resolve(exists);
-      });
-    });
+    return Promise.resolve(existsSync(filepath || ''));
   }
 
   open(filepath: string): Promise<string | Buffer> {
