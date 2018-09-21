@@ -1,6 +1,6 @@
 import { exists, readFile, writeFile } from 'fs';
-import * as mkdirp from 'mkdirp';
 import { dirname } from 'path';
+const mkdirp = require('mkdirp');
 
 export type FileOptions = { encoding?: string | null; mode?: number | string; flag?: string; } | string | undefined | null;
 
