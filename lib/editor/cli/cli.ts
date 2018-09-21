@@ -8,7 +8,7 @@ export class Cli {
               openOrCreateCommand: OpenOrCreateCommand,
               shell: Shell) {
     commander
-      .usage(`${name} <file>`)
+      .usage(`<file>`)
       .version(version)
       .arguments('<file>')
       .action(file => {
