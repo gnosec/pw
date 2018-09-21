@@ -78,13 +78,11 @@ export class GenerateCommand implements Command {
   }
 
   execute(passwordSafe: PasswordSafe, key: string, options: PasswordOptions): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      const password = this._passwordService.createPassword(options);
-      if (key != null) {
-        passwordSafe.set(key, password);
-      }
-      this._clipboardService.copy(password);
-      resolve(passwordSafe);
-    });
+    const password = this._passwordService.createPassword(options);
+    if (key != null) {
+      passwordSafe.set(key, password);
+    }
+    this._clipboardService.copy(password);
+    return Promise.resolve(passwordSafe);
   }
 }

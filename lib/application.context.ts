@@ -31,6 +31,8 @@ import { Cli } from './editor/cli/cli';
 import { CreateCommand } from './editor/cli/command/create.command';
 import { OpenCommand } from './editor/cli/command/open.command';
 import { OpenOrCreateCommand } from './editor/cli/command/open-or-create.command';
+import { ExportCommand } from './editor/shell/command/export.command';
+import { HistoryCommand } from './editor/shell/command/history.command';
 
 const passwordService = new PasswordService(applicationConfig.password);
 
@@ -79,7 +81,9 @@ const shellCommands = [
   new MoveCommand(validationService),
   new ListCommand(logger),
   new TreeCommand(logger, applicationConfig.key.delimiter),
-  new EchoCommand(logger)
+  new EchoCommand(logger),
+  new ExportCommand(clipboardService),
+  new HistoryCommand(logger)
 ];
 
 const shell = new Shell(

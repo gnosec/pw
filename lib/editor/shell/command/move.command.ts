@@ -44,18 +44,16 @@ export class MoveCommand implements Command {
   }
 
   execute(passwordSafe: PasswordSafe, key: string, newKey: string): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      this._validationService
-        .getMatches(passwordSafe.data, key)
-        .forEach(match => {
-          passwordSafe.set(
-            newKey + match.substring(key.length),
-            passwordSafe.get(match)
-          );
-          passwordSafe.delete(match);
-        });
+    this._validationService
+      .getMatches(passwordSafe.data, key)
+      .forEach(match => {
+        passwordSafe.set(
+          newKey + match.substring(key.length),
+          passwordSafe.get(match)
+        );
+        passwordSafe.delete(match);
+      });
 
-      resolve(passwordSafe);
-    });
+    return Promise.resolve(passwordSafe);
   }
 }

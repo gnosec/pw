@@ -17,18 +17,16 @@ export class ListCommand implements Command {
   }
 
   execute(passwordSafe: PasswordSafe, search?: string): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      this._logger.log(
-        passwordSafe.keys
-          .filter(
-            key =>
-              !search ||
-              key.toLowerCase().includes(String(search).toLowerCase())
-          )
-          .sort((a, b) => a.localeCompare(b))
-          .join(LineEnding)
-      );
-      resolve(passwordSafe);
-    });
+    this._logger.log(
+      passwordSafe.keys
+        .filter(
+          key =>
+            !search ||
+            key.toLowerCase().includes(String(search).toLowerCase())
+        )
+        .sort((a, b) => a.localeCompare(b))
+        .join(LineEnding)
+    );
+    return Promise.resolve(passwordSafe);
   }
 }

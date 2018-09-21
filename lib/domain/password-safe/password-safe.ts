@@ -41,13 +41,16 @@ export class PasswordSafe {
     return Object.keys(this._data);
   }
 
-  has(key: string): boolean {
-    return this._data[_checkKey(key)] != null;
+  has(key: string, index: number = 0): boolean {
+    return this._data[_checkKey(key)] != null
+      && this._data[key][index] != null;
   }
 
-  get(key: string): string {
+  get(key: string, index: number = 0): string {
     const values = this._data[ _checkKey(key)];
-    return values ? values[0].value : undefined;
+    return values
+      ? (values[index] ? values[index].value : undefined)
+      : undefined;
   }
 
   getValues(key: string): ValueEntry[] {

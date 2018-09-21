@@ -16,20 +16,18 @@ export class TreeCommand implements Command {
   }
 
   execute(passwordSafe: PasswordSafe, search?: string): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      this._logger.log(
-        treeify.asTree(
-          this._createTree(
-            passwordSafe.keys.filter(
-              key =>
-                !search ||
-                key.toLowerCase().includes(String(search).toLowerCase())
-            )
+    this._logger.log(
+      treeify.asTree(
+        this._createTree(
+          passwordSafe.keys.filter(
+            key =>
+              !search ||
+              key.toLowerCase().includes(String(search).toLowerCase())
           )
         )
-      );
-      resolve(passwordSafe);
-    });
+      )
+    );
+    return Promise.resolve(passwordSafe);
   }
 
   private _createTree(keys: string[]): any {

@@ -10,7 +10,7 @@ export class EchoCommand implements Command {
 
   get definition(): CommandDefinition {
     return {
-      usage: 'echo <key>',
+      usage: 'echo <key> [index]',
       description: 'Prints the value for the given key'
     };
   }
@@ -19,17 +19,18 @@ export class EchoCommand implements Command {
     return passwordSafe.keys;
   }
 
-  validate({ passwordSafe, key }: any): string[] {
+  validate({ passwordSafe, key, index = 0 }: any): string[] {
     if (!passwordSafe.has(key)) {
       return [`"${key}" is not a key`];
+    }
+    if (!passwordSafe.has(key, index)) {
+      return [`"${index}" is not a valid value index for key "${key}"`];
     }
     return [];
   }
 
-  execute(passwordSafe: PasswordSafe, key: string): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      this._logger.log(passwordSafe.get(key) + LineEnding);
-      resolve(passwordSafe);
-    });
+  execute(passwordSafe: PasswordSafe, key: string, index: number = 0): Promise<PasswordSafe> {
+    this._logger.log(passwordSafe.get(key, index) + LineEnding);
+    return Promise.resolve(passwordSafe);
   }
 }

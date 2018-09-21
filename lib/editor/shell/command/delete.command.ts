@@ -28,13 +28,12 @@ export class DeleteCommand {
   }
 
   execute(passwordSafe: PasswordSafe, key: string): Promise<PasswordSafe> {
-    return new Promise((resolve, reject) => {
-      this._validationService
-        .getMatches(passwordSafe.data, key)
-        .forEach(match => {
-          passwordSafe.delete(match);
-        });
-      resolve(passwordSafe);
-    });
+    this._validationService
+      .getMatches(passwordSafe.data, key)
+      .forEach(match => {
+        passwordSafe.delete(match);
+      });
+
+    return Promise.resolve(passwordSafe);
   }
 }
