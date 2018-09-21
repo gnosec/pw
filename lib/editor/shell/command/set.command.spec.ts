@@ -31,9 +31,7 @@ describe('SetCommand', () => {
     const Errors = ['error1', 'error2'];
     const Conflicts = ['key1', 'key2'];
     const KeyOnly = {
-      passwordSafe: {
-        data: {}
-      },
+      passwordSafe: new PasswordSafe(),
       key: 'key'
     };
     const KeyAndValue = Object.assign({}, KeyOnly, {
@@ -86,11 +84,10 @@ describe('SetCommand', () => {
 
   describe('execute()', () => {
     it('should set a key to a value', done => {
-      const data = {},
-        key = 'key',
+      const key = 'key',
         value = 'value';
 
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
       command.execute(passwordSafe, key, value).then(() => {
         expect(passwordSafe.get(key)).toBe(value);
         done();
@@ -98,13 +95,12 @@ describe('SetCommand', () => {
     });
 
     it('should prompt for a value when a value is not provided', done => {
-      const data = {},
-        key = 'key',
+      const key = 'key',
         value = 'value';
 
       promptService.prompt = jest.fn(() => Promise.resolve({ value }));
 
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
       command.execute(passwordSafe, key).then(() => {
         expect(passwordSafe.get(key)).toBe(value);
         done();
@@ -112,14 +108,13 @@ describe('SetCommand', () => {
     });
 
     it('should validate value submitted to prompt', done => {
-      const data = {},
-        key = 'key',
+      const key = 'key',
         value = 'value',
         invalidKey = '';
 
       const mockFn = promptService.prompt = jest.fn(() => Promise.resolve({ value }));
 
-      command.execute(new PasswordSafe(data), key).then(() => {
+      command.execute(new PasswordSafe(), key).then(() => {
         const validate = mockFn.mock.calls[0][0].validate;
         expect(validate(key)).toBe(true);
         expect(validate(invalidKey).length).toBeGreaterThan(0);

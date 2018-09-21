@@ -35,16 +35,15 @@ describe('PasswordSafe', () => {
     });
 
     it('should set the specified value', () => {
-      const data = <any>{};
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
 
       passwordSafe.set('key', 'value');
       expect(passwordSafe.get('key')).toBe('value');
     });
 
     it('should overwrite existing values if keys match', () => {
-      const data = { key: [{ value: '1'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', '1');
 
       passwordSafe.set('key', '2');
       expect(passwordSafe.get('key')).toBe('2');
@@ -59,8 +58,8 @@ describe('PasswordSafe', () => {
     });
 
     it('should trigger change when existing value is overwritten', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
       passwordSafe.set('key', 'newValue');
@@ -68,8 +67,8 @@ describe('PasswordSafe', () => {
     });
 
     it('should not trigger change event when value does not change', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
       passwordSafe.set('key', 'value');
@@ -85,15 +84,14 @@ describe('PasswordSafe', () => {
     });
 
     it('should return true if the key is present', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
 
       expect(passwordSafe.has('key')).toBe(true);
     });
 
     it('should return false if the key is absent', () => {
-      const data = {};
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
 
       expect(passwordSafe.has('key')).toBe(false);
     });
@@ -107,17 +105,17 @@ describe('PasswordSafe', () => {
     });
 
     it('should get the value of the input key', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
 
-      expect(passwordSafe.get('key')).toBe(data.key[0].value);
+      expect(passwordSafe.get('key')).toBe(passwordSafe.data['key'][0].value);
     });
 
     it('should return undefined when it does not match', () => {
       const passwordSafe = new PasswordSafe({
         'one.2': 1,
         'one.two': 1,
-        other: 1
+        'other': 1
       });
 
       expect(passwordSafe.get('missing')).toBeUndefined();
@@ -134,15 +132,15 @@ describe('PasswordSafe', () => {
     });
 
     it('should delete the specified value', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
       passwordSafe.delete('key');
-      expect(data.key).toBeUndefined();
+      expect(passwordSafe.get('key')).toBeUndefined();
     });
 
     it('should trigger change event when value changes', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
       passwordSafe.delete('key');
@@ -150,8 +148,8 @@ describe('PasswordSafe', () => {
     });
 
     it('should not trigger change event when value does not change', () => {
-      const data = { key: [{ value: 'value'}] };
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('key', 'value');
       const spy = jest.fn();
       passwordSafe.events.on('change', spy);
       passwordSafe.delete('noSuchKey');

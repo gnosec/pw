@@ -80,7 +80,7 @@ describe('ValidationService', () => {
     const data = {
       'one.2': 1,
       'one.two': 1,
-      other: 1,
+      'other': 1,
       '..invalid..': 1
     };
 

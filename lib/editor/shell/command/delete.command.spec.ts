@@ -19,7 +19,8 @@ describe('DeleteCommand', () => {
 
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
-      const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('a', 'a');
       expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });

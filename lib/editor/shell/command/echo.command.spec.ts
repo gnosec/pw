@@ -17,7 +17,8 @@ describe('EchoCommand', () => {
 
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
-      const passwordSafe = new PasswordSafe({ a: 'a', b: 'b' });
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('a', 'a');
       expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
@@ -56,13 +57,15 @@ describe('EchoCommand', () => {
 
   describe('execute()', () => {
     it('should log value of key', done => {
-      const data = { key: [{ value: 'value' }] },
+      const passwordSafe = new PasswordSafe(),
         key = 'key',
         value = 'value';
 
+      passwordSafe.set('key', 'value');
+
       logger.log = jest.fn();
 
-      command.execute(new PasswordSafe(data), key).then(() => {
+      command.execute(passwordSafe, key).then(() => {
         expect(logger.log).toHaveBeenCalledWith(`${value}${LineEnding}`);
         done();
       });

@@ -99,14 +99,13 @@ describe('GenerateCommand', () => {
 
   describe('execute()', () => {
     it('should set a key to a value when a key is provided', done => {
-      const data = {},
-        key = 'key',
+      const key = 'key',
         value = 'value',
         options = {};
 
       passwordService.createPassword = jest.fn(() => value);
 
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
       command.execute(passwordSafe, key, options).then(() => {
         expect(passwordSafe.get(key)).toBe(value);
         done();
@@ -114,14 +113,13 @@ describe('GenerateCommand', () => {
     });
 
     it('should not set a key to a value when a key is not provided', done => {
-      const data = {},
-        key = undefined,
+      const key = undefined,
         value = 'value',
         options = {};
 
       passwordService.createPassword = jest.fn(() => value);
 
-      const passwordSafe = new PasswordSafe(data);
+      const passwordSafe = new PasswordSafe();
       command.execute(passwordSafe, key, options).then(() => {
         expect(passwordSafe.data[key]).toBeUndefined();
         done();
@@ -129,15 +127,14 @@ describe('GenerateCommand', () => {
     });
 
     it('should copy generated value to clipboard', done => {
-      const data = {},
-        key = 'key',
+      const key = 'key',
         value = 'value',
         options = {};
 
       passwordService.createPassword = jest.fn(() => value);
       clipboardService.copy = jest.fn();
 
-      command.execute(new PasswordSafe(data), key, options).then(() => {
+      command.execute(new PasswordSafe(), key, options).then(() => {
         expect(clipboardService.copy).toHaveBeenCalledWith(value);
         done();
       });

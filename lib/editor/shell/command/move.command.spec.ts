@@ -30,16 +30,19 @@ describe('MoveCommand', () => {
 
   describe('autocomplete()', () => {
     it('should autocomplete password safe keys', () => {
-      const passwordSafe = new PasswordSafe({ a: [{ value: 'a' }], b: [{ value: 'b' }] });
+      const passwordSafe = new PasswordSafe();
+      passwordSafe.set('a', 'b');
       expect(command.autocomplete(<Session>{ passwordSafe })).toEqual(passwordSafe.keys);
     });
   });
 
   describe('validate()', () => {
-    const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
+    const passwordSafe = new PasswordSafe(),
       key = 'key',
       newKey = 'newKey',
       Errors = ['error', 'anotherError'];
+
+    passwordSafe.set('key', 'value');
 
     const Args = {
       passwordSafe,
@@ -84,9 +87,11 @@ describe('MoveCommand', () => {
 
   describe('execute()', () => {
     it('should copy a key value to a new key', done => {
-      const passwordSafe = new PasswordSafe({ key: [{ value: 'value' }] }),
+      const passwordSafe = new PasswordSafe(),
         key = 'key',
         newKey = 'newKey';
+
+      passwordSafe.set('key', 'value');
 
       validationService.getMatches = jest.fn(() => ['key']);
 
@@ -99,13 +104,13 @@ describe('MoveCommand', () => {
     });
 
     it('should copy all <key>/* to <newKey>/* when the key matches a subpath of existing key(s)', done => {
-      const passwordSafe = new PasswordSafe({
-          'a.a': [{ value: 'aa' }],
-          'a.b': [{ value: 'ab' }],
-          'a.c': [{ value: 'ac' }]
-        }),
+      const passwordSafe = new PasswordSafe(),
         key = 'a',
         newKey = 'b';
+
+      passwordSafe.set('a.a', 'aa');
+      passwordSafe.set('a.b', 'ab');
+      passwordSafe.set('a.c', 'ac');
 
       validationService.getMatches = jest.fn(() => ['a.a', 'a.b', 'a.c']);
 
