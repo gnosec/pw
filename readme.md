@@ -31,17 +31,17 @@ password-file$ help
     help [command...]        Provides help for a given command.
     exit                     Exits application.
     change-master-password   Changes the master password of the file
-    gen [options] [key]      Generates a password and copies it to the clipboard. If a key is provided, the password will be stored as the value of that key.
-    set <key> [value]        Sets a key-value pair. The value will be prompted for if not provided
-    get <key> [index]        Copies the value of the given key to the clipboard
-    rm <key>                 Removes a key value pair
     cp <key> <newKey>        Copies a key-value pair
-    mv <key> <newKey>        Renames a key
-    ls [search]              Prints all keys alphabetically and filtered by the search word
-    tree [search]            Prints all keys alphabetically in a tree format and filters them the search word
     echo <key> [index]       Prints the value for the given key
     export                   Copies all password safe data to the clipboard in JSON format
+    gen [options] [key]      Generates a password and copies it to the clipboard. If a key is provided, the password will be stored as the value of that key.
+    get <key> [index]        Copies the value of the given key to the clipboard
     history <key>            Prints all historical values for a given key and the date and time they were entered
+    ls [search]              Prints all keys alphabetically and filtered by the search word
+    mv <key> <newKey>        Renames a key
+    rm <key>                 Removes a key value pair
+    set <key> [value]        Sets a key-value pair. The value will be prompted for if not provided
+    tree [search]            Prints all keys alphabetically in a tree format and filters them the search word
 
 passwords-file$ gen mybank.password
 passwords-file$ echo mybank.password

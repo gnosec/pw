@@ -84,7 +84,7 @@ const shellCommands = [
   new EchoCommand(logger),
   new ExportCommand(clipboardService),
   new HistoryCommand(logger)
-];
+].sort((a, b) => a.definition.usage.localeCompare(b.definition.usage));
 
 const shell = new Shell(
   applicationConfig.editor,
