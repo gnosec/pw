@@ -1,6 +1,6 @@
 import * as treeify from 'treeify';
 import { Command, CommandDefinition } from './command';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class TreeCommand implements Command {
   constructor(private _logger,

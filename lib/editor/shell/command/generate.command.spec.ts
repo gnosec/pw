@@ -1,8 +1,8 @@
 import { GenerateCommand } from './generate.command';
 import { ClipboardService } from '../../support/clipboard.service';
 import { ValidationService } from '../../support/validation.service';
-import { PasswordService } from '../../../domain/password/password.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordService } from '../../../domain/password';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { applicationConfig, PasswordConfig } from '../../../application.config';
 
 describe('GenerateCommand', () => {

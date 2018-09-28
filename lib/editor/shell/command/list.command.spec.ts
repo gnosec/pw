@@ -1,6 +1,6 @@
 import { ListCommand } from './list.command';
 import { Logger } from '../../support/logger';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { EOL as LineEnding } from 'os';
 import { Color } from '../../support/color';
 

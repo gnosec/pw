@@ -1,6 +1,6 @@
 import { Command, CommandDefinition } from './command';
 import { ClipboardService } from '../../support/clipboard.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class ExportCommand implements Command {
 

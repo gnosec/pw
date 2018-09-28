@@ -1,7 +1,7 @@
 import { ValidationService } from '../../support/validation.service';
 import { Command, CommandDefinition } from './command';
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { EOL as LineEnding } from 'os';
 
 export class MoveCommand implements Command {

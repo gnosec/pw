@@ -1,9 +1,9 @@
 import { ApplicationConfig } from '../../application.config';
-import { PasswordOptions } from '../../domain/password/password.service';
+import { PasswordOptions } from '../../domain/password';
 import {
   CharacterSetNames,
   CharacterSetsByName
-} from '../../domain/password/character-sets';
+} from '../../domain/password';
 
 /**
  * Responsible for user input validation

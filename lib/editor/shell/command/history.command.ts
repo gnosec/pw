@@ -1,7 +1,7 @@
 import { Command, CommandDefinition } from './command';
 import { Logger } from '../../support/logger';
 import { EOL as LineEnding } from 'os';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { Session } from '../../session';
 import { format } from 'date-fns';
 

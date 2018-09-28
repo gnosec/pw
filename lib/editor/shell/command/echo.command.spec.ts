@@ -1,7 +1,7 @@
 import { EchoCommand } from './echo.command';
 import { Logger } from '../../support/logger';
 import { Color } from '../../support/color';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { EOL as LineEnding } from 'os';
 import { Session } from '../../session';
 

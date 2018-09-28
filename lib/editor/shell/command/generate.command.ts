@@ -1,13 +1,13 @@
 import { EOL as LineEnding } from 'os';
 import {
   CharacterSetNames
-} from '../../../domain/password/character-sets';
+} from '../../../domain/password';
 import { ValidationService } from '../../support/validation.service';
-import { PasswordOptions, PasswordService } from '../../../domain/password/password.service';
+import { PasswordOptions, PasswordService } from '../../../domain/password';
 import { PasswordConfig } from '../../../application.config';
 import { ClipboardService } from '../../support/clipboard.service';
 import { Command, CommandDefinition } from './command';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class GenerateCommand implements Command {
   constructor(private _validationService: ValidationService,

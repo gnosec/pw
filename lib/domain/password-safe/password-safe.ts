@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { ChangeEvent } from '../events';
-import { notNullOrEmptyString } from '../validation/assertions';
+import { notNullOrEmptyString } from '../validation';
 
 const SchemaVersion = '3.0.0';
 const _checkKey = input =>

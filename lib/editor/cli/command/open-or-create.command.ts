@@ -1,5 +1,5 @@
 import { Session } from '../../session';
-import { FileService } from '../../../domain/password-safe/file.service';
+import { FileService } from '../../../domain/password-safe';
 import { CreateCommand } from './create.command';
 import { OpenCommand } from './open.command';
 

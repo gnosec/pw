@@ -2,7 +2,7 @@ import { Command, CommandDefinition } from './command';
 import { EOL as LineEnding } from 'os';
 import { ValidationService } from '../../support/validation.service';
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class CopyCommand implements Command {
   constructor(private _validationService: ValidationService) {

@@ -1,6 +1,6 @@
 import { EditorConfig } from '../../application.config';
-import { Command } from './command/command';
-import { PasswordSafeService } from '../../domain/password-safe/password-safe.service';
+import { Command } from './command';
+import { PasswordSafeService } from '../../domain/password-safe';
 import { Color } from '../support/color';
 import { Logger } from '../support/logger';
 import * as Vorpal from 'vorpal';

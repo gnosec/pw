@@ -1,6 +1,6 @@
 import { DeleteCommand } from './delete.command';
 import { ValidationService } from '../../support/validation.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { Session } from '../../session';
 import { applicationConfig } from '../../../application.config';
 

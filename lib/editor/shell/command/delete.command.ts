@@ -1,7 +1,7 @@
 import { ValidationService } from '../../support/validation.service';
 import { CommandDefinition } from './command';
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class DeleteCommand {
   constructor(private _validationService: ValidationService) {

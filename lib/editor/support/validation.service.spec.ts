@@ -1,5 +1,5 @@
 import { ValidationService } from './validation.service';
-import { CharacterSetsByName } from '../../domain/password/character-sets';
+import { CharacterSetsByName } from '../../domain/password';
 import { ApplicationConfig } from '../../application.config';
 
 describe('ValidationService', () => {

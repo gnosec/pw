@@ -1,5 +1,5 @@
 import { Session } from '../../session';
-import { PasswordSafeService } from '../../../domain/password-safe/password-safe.service';
+import { PasswordSafeService } from '../../../domain/password-safe';
 import { PromptService } from '../../support/prompt.service';
 
 export class OpenCommand {

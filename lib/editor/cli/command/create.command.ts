@@ -1,4 +1,4 @@
-import { PasswordSafeService } from '../../../domain/password-safe/password-safe.service';
+import { PasswordSafeService } from '../../../domain/password-safe';
 import { ValidationService } from '../../support/validation.service';
 import { PromptService } from '../../support/prompt.service';
 import { Session } from '../../session';

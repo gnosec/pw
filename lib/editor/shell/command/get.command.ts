@@ -1,7 +1,7 @@
 import { ClipboardService } from '../../support/clipboard.service';
 import { Command, CommandDefinition } from './command';
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class GetCommand implements Command {
   constructor(private _clipboardService: ClipboardService) {

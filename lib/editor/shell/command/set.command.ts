@@ -2,7 +2,7 @@ import { EOL as LineEnding } from 'os';
 import { Command, CommandDefinition } from './command';
 import { ValidationService } from '../../support/validation.service';
 import { PromptService } from '../../support/prompt.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class SetCommand implements Command {
   constructor(private _validationService: ValidationService,

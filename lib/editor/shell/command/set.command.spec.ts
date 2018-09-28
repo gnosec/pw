@@ -1,7 +1,7 @@
 import { SetCommand } from './set.command';
 import { ValidationService } from '../../support/validation.service';
 import { PromptService } from '../../support/prompt.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { applicationConfig } from '../../../application.config';
 
 describe('SetCommand', () => {

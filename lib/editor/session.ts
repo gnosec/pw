@@ -1,10 +1,10 @@
 import { EventEmitter } from 'events';
-import { ChangeEvent } from '../domain/events/index';
+import { ChangeEvent } from '../domain/events';
 import {
   notNull,
   notNullOrEmptyString
-} from '../domain/validation/assertions';
-import { PasswordSafe } from '../domain/password-safe/password-safe';
+} from '../domain/validation';
+import { PasswordSafe } from '../domain/password-safe';
 
 const _checkFilepath = input =>
   notNullOrEmptyString(input, 'filepath may not be null or empty');

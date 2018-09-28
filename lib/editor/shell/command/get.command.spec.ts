@@ -1,6 +1,6 @@
 import { GetCommand } from './get.command';
 import { ClipboardService } from '../../support/clipboard.service';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { Session } from '../../session';
 
 describe('GetCommand', () => {

@@ -1,6 +1,6 @@
 import { TreeCommand } from './tree.command';
 import { Logger } from '../../support/logger';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 import { Color } from '../../support/color';
 
 const createPasswordSafe = (...values) => values.reduce((passwordSafe, value) => {

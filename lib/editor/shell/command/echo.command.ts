@@ -2,7 +2,7 @@ import { EOL as LineEnding } from 'os';
 import { Command, CommandDefinition } from './command';
 import { Logger } from '../../support/logger';
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export class EchoCommand implements Command {
   constructor(private _logger: Logger) {

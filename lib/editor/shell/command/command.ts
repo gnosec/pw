@@ -1,5 +1,5 @@
 import { Session } from '../../session';
-import { PasswordSafe } from '../../../domain/password-safe/password-safe';
+import { PasswordSafe } from '../../../domain/password-safe';
 
 export interface Command {
   readonly definition: CommandDefinition;

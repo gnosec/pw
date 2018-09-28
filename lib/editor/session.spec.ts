@@ -1,6 +1,6 @@
 import { Session } from './session';
-import { PasswordSafe } from '../domain/password-safe/password-safe';
-import { ChangeEvent } from '../domain/events/index';
+import { PasswordSafe } from '../domain/password-safe';
+import { ChangeEvent } from '../domain/events';
 
 describe('Session', () => {
   const validFilepath = 'a';

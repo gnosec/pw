@@ -1,5 +1,5 @@
 import { PasswordSafe } from './password-safe';
-import { ChangeEvent } from '../events/index';
+import { ChangeEvent } from '../events';
 import * as semver from 'semver';
 
 const InvalidKeys = ['', null, undefined, 999, {}, [], () => {}, /regex/];

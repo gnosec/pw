@@ -1,7 +1,7 @@
 import * as commander from 'commander';
 import { ApplicationInfo } from '../../application.info';
 import { Shell } from '../shell/shell';
-import { OpenOrCreateCommand } from './command/open-or-create.command';
+import { OpenOrCreateCommand } from './command';
 
 export class Cli {
   constructor({ name, version }: ApplicationInfo,
