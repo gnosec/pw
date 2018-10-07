@@ -1,5 +1,5 @@
 {
-  "name": "pw",
+  "name": "@gnosec/pw",
   "version": "1.0.0",
   "description": "Intuitive cross-platform command line password manager",
   "license": "GPL-3.0-only",
