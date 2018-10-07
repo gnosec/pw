@@ -1,6 +1,6 @@
 {
   "name": "@gnosec/pw",
-  "version": "1.0.2",
+  "version": "1.0.0-rc1",
   "description": "Intuitive cross-platform command line password manager",
   "license": "GPL-3.0-only",
   "author": {
@@ -19,11 +19,14 @@
     "build": "npm run test && npm run clean && npm run compile && npm run package",
     "test": "jest --preset=ts-jest",
     "cover": "jest --preset=ts-jest --coverage --collectCoverageFrom=lib/**/*.{ts}",
-    "postinstall": "npm run compile"
+    "prepublish": "npm run test && npm run clean && npm run compile"
   },
   "bin": {
     "pw": "dist/pw.js"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "chalk": "^2.3.2",
     "commander": "^2.15.0",
