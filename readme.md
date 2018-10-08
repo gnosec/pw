@@ -8,6 +8,34 @@
 
 A simple and intuitive cross-platform command-line password manager.
 
+## Installation
+
+As NPM script
+
+```bash
+npm i -g @gnosec/pw
+```
+
+As binary built from source
+
+```bash
+# download
+git clone git@github.com/gnosec/pw
+
+# build
+cd pw
+npm run build
+
+# install on Mac OS
+mv bin/pw-macos /usr/local/bin/pw
+
+# install on Linux
+echo "export PATH=\$PATH:/pw/parent/dir" >> ~/.bashrc && source ~/.bashrc
+
+# install on Windows
+setx path "%path%;pw/parent/dir"
+```
+
 ## Usage
 
 ```bash
@@ -50,29 +78,7 @@ c*U6FbTqVELRPaB!%sFf.2~LIOn[;ori'
 
 ## Commands under consideration
 
-1. Save command
-1. Undo command
 1. Custom cryptography algorithm option on invocation "pw --algorithm AES my-passwords"
-
-## Installation
-
-```bash
-# Download code
-git clone git@github.com/gnosec/pw
-cd pw
-
-# Build from source
-npm run build
-
-# Mac OS
-mv bin/pw-macos /usr/local/bin/pw
-
-# Linux
-echo "export PATH=\$PATH:/pw/parent/dir" >> ~/.bashrc && source ~/.bashrc
-
-# Windows
-setx path "%path%;pw/parent/dir"
-```
 
 ## Development
 

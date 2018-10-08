@@ -1,4 +1,8 @@
-export type Charset = 'extended-symbols' | 'symbols' | 'alphanumeric' | 'numeric';
+export type Charset = 'extended-symbols'
+  | 'standard-symbols'
+  | 'basic-symbols'
+  | 'alphanumeric'
+  | 'numeric';
 
 export interface ApplicationConfig {
   readonly masterPassword: MasterPasswordConfig;

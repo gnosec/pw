@@ -1,14 +1,6 @@
 import { PasswordConfig } from '../../application.config';
-import { randomBytes } from 'crypto';
-import { CharacterSetsByName, Spaces } from './character-sets';
-
-function toArray(buffer: Buffer): any[] {
-  const array = [];
-  for (let i = 0; i < buffer.length; i++) {
-    array.push(buffer[i]);
-  }
-  return array;
-}
+import { CharacterSetsByName } from './character-sets';
+import { Spaces, generateRandomPassword } from '@gnosec/password-generator';
 
 export interface PasswordOptions {
   readonly length?: number;
@@ -18,7 +10,7 @@ export interface PasswordOptions {
 
 interface PasswordSettings {
   readonly length: number;
-  readonly characters: string[]
+  readonly characters: string[];
 }
 
 export class PasswordService {
@@ -26,10 +18,7 @@ export class PasswordService {
   }
 
   createPassword(options: PasswordOptions = {}): string {
-    const { length, characters } = this._createSettings(options);
-    return toArray(randomBytes(length))
-      .map(byte => characters[byte % characters.length])
-      .join('');
+    return generateRandomPassword(this._createSettings(options));
   }
 
   private _createSettings(options: PasswordOptions): PasswordSettings {

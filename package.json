@@ -1,6 +1,6 @@
 {
   "name": "@gnosec/pw",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "description": "Intuitive cross-platform command line password manager",
   "license": "GPL-3.0-only",
   "author": {
@@ -11,6 +11,9 @@
   "homepage": "https://github.com/gnosec/pw",
   "bugs": {
     "url": "https://github.com/gnosec/pw/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "clean": "rimraf bin",
@@ -28,6 +31,7 @@
     "dist"
   ],
   "dependencies": {
+    "@gnosec/password-generator": "^1.0.0-rc1",
     "chalk": "^2.3.2",
     "commander": "^2.15.0",
     "copy-paste-win32fix": "^1.4.0",

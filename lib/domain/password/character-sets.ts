@@ -1,13 +1,6 @@
 import { CharacterSet } from './character-set';
+import { Numbers, Letters, BasicSymbols, StandardSymbols, ExtendedSymbols } from '@gnosec/password-generator';
 
-export const Numbers: string[] = '0123456789'.split('');
-export const Alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(
-  ''
-);
-export const BasicSymbols: string[] = '_-+.'.split('');
-export const StandardSymbols: string[] = '!@#$%^&*'.split('');
-export const ExtendedSymbols: string[] = '~`=(){}[]|\\:;"\'<>,?/'.split('');
-export const Spaces: string[] = ' '.split('');
 export const CharacterSets: CharacterSet[] = [
   {
     name: 'numeric',
@@ -15,21 +8,21 @@ export const CharacterSets: CharacterSet[] = [
   },
   {
     name: 'alphanumeric',
-    characters: [...Numbers, ...Alphabet]
+    characters: [...Numbers, ...Letters]
   },
   {
     name: 'basic-symbols',
-    characters: [...Numbers, ...Alphabet, ...BasicSymbols]
+    characters: [...Numbers, ...Letters, ...BasicSymbols]
   },
   {
     name: 'standard-symbols',
-    characters: [...Numbers, ...Alphabet, ...BasicSymbols, ...StandardSymbols]
+    characters: [...Numbers, ...Letters, ...BasicSymbols, ...StandardSymbols]
   },
   {
     name: 'extended-symbols',
     characters: [
       ...Numbers,
-      ...Alphabet,
+      ...Letters,
       ...BasicSymbols,
       ...StandardSymbols,
       ...ExtendedSymbols
